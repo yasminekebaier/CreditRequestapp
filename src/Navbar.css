@@ -1,0 +1,46 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .nav-title {
+    margin: 0;
+    font-size: 24px;
+    color: #fff;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .nav-button:hover {
+    background-color: #555;
+  }
+  
+  
+  .home-button {
+    background-color: #007BFF;
+  }
+  
+  
+  .about-button {
+    background-color: #007BFF;
+  
+  }
