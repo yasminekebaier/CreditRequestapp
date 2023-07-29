@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 function Agent (){
     
@@ -15,10 +16,11 @@ function Agent (){
     return(
 <div className="home"><h4>customers:</h4>
       {clients.map(client => (
-        <div className="blog-preview" key={client.id} >
+        <div className="client-preview" key={client.id} >
+        <Link to={`/client/${client.id}`}>
           <h2>{client.name}</h2>
           <p> { client.cin }</p>
-      
+          </Link>
         </div>
       ))}
     </div>
