@@ -6,6 +6,8 @@ import Navbarr from "./Navbarr";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Clientdetails from "./Clientdetails";
 import Home from "./Home";
+import Ocr from "./Ocr";
+ import Login2 from "./Login2"
 function App() {
   return (<div>
     <Router>
@@ -15,6 +17,12 @@ function App() {
           <Switch>
           <Route exact path="/">
                <Home/>
+            </Route>
+    <Route exact path="/login2">
+               <Login2/>
+            </Route>
+            <Route exact path="/ocr">
+               <Ocr/>
             </Route>
             <Route exact path="/login">
               <Login />

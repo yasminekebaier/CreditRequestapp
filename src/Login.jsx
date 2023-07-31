@@ -1,71 +1,78 @@
-import { Checkbox, Label, TextInput, FileInput } from "flowbite-react";
-
-import { BsArrowRightShort } from "react-icons/bs";
+import axios from "axios";
+import { useState } from "react";
+ import { Link } from 'react-router-dom';
+ 
 function Login(){
-    return(<div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20">
+   const [clients,setclients] = useState([{name:'',lastname:'',cin:'', birth:'',address:'',Email:''}]); 
+  
+  const handleName=(e)=>{
+    setclients( ...clients,  clients.name =e.target.value )
+  }; 
+  const handlelastname=(e)=>{
+    setclients( ...clients,  clients.lastname =e.target.value )
+  }; 
+  const handlecin=(e)=>{
+    setclients( ...clients,  clients.cin =e.target.value )
+  }; 
+  const handleemail=(e)=>{
+    setclients( ...clients,  clients.Email =e.target.value )
+  }; 
+  const handlebirth=(e)=>{
+    setclients( ...clients,  clients.birth =e.target.value )
+  }; 
+  const handleaddress=(e)=>{
+    setclients( ...clients,  clients.address =e.target.value )
+  }; 
+  const handlesubmit=(e)=>{
+    e.preventDefault() 
+    axios.get('', clients ).then((res)=> console.log(res.data))  
+   }
+    return(  
+    <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
     <div className="w-[500px] h-fit py-[16px] bg-white rounded-3xl border-2 border-gray-300 p-8  ">
-      <h1 className="text-[50px] font-medium">Login </h1>
-      <p className="text-[18px]">to start learning</p>
-
-      <form className="flex max-w-md flex-col gap-4 mt-[20px]">
-        <Label htmlFor="name" value="Your name" />
-        <TextInput placeholder="Your name" id="name" shadow type="text" />
-
-        <Label htmlFor="lastname" value="Your lastname" />
-        <TextInput placeholder="Your lastname" id="lastname" shadow type="text" />
-
-        <Label htmlFor="email2" value="Your email" />
-        <TextInput
-          id="email2"
-          placeholder="name@flowbite.com"
-          required
-          shadow
-          type="email"
-        />
-        <Label htmlFor="password2" value="Your password" />
-        <TextInput id="password2" required shadow type="password" />
-        <Label htmlFor="repeat-password" value="Repeat password" />
-        <TextInput id="repeat-password" required shadow type="password" />
-        <div className="input-group">
-  <input type="text" className="form-control" aria-label="Dollar amount (with dot and two decimal places)"/>
-  <span className="input-group-text">$</span>
-  <span className="input-group-text">0.00</span>
-</div>   
-
-        <div className="max-w-md" id="fileUpload">
-          <div className="mb-2 block">
-            <Label htmlFor="file" value="Upload file" />
-          </div>
-          <FileInput
-            helperText="A profile picture is useful to confirm your are logged into your account"
-            id="file"
-          />
-        </div>
-        <div className="flex items-center gap-2 ">
-          <Checkbox id="agree" />
-          <Label className="flex" htmlFor="agree">
-            <p>I agree with the</p>
-            <a
-              className=" text-cyan-600 hover:underline dark:text-cyan-500"
-              href="/forms"
-            >
-              <p className="ms-1"> terms and conditions</p>
-            </a>
-          </Label>
-        </div>
-         
-
-                    
-        <button className="bg-blue-600 rounded-md py-2 text-white ">
-          <div className="flex items-center text-lg gap-[10px] justify-center">
-            Login
-            <BsArrowRightShort size={40} />
-          </div>
-        </button>
-        
+      <h1 className="text-[50px] font-medium">Login    </h1>
+      <p className="text-[18px]">Personal Information: </p>
+       
+      <form>
+      <div className="mb-3">
+  <label htmlFor=" Input1" className="form-label">Name</label>
+  <input type="text" className="form-control" id=" Input1" placeholder="name " onChange={handleName}/>
+</div>
+  <div className="mb-3">
+  <label htmlFor="Input2" className="form-label">LastName </label>
+  <input type="text" className="form-control" id="Input2" placeholder=" LastName" onChange={handlelastname}/>
+</div>
+  <div className="mb-3">
+  <label htmlFor=" Input3" className="form-label">Date of birth</label>
+  <input type="date" className="form-control" id="Input3" placeholder="jj/mm/aa"onChange={handlebirth}/>
+</div>
+  <div className="mb-3">
+  <label htmlFor="Input4" className="form-label">National ID</label>
+  <input type="text" className="form-control" id="Input4" placeholder="National ID" onChange={handlecin}/>
+</div>
+  <div className="mb-3">
+  <label htmlFor="Input5" className="form-label">Residential address</label>
+  <input type="text" className="form-control" id=" Input5" placeholder="Residential address"onChange={handleaddress}/>
+</div>
+  <div className="mb-3">
+  <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
+  <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com"onChange={handleemail}/>
+</div>
+<div className="btn-group" role="group" aria-label="Basic example">
+ <Link to="/login2">  <button type="button" className="btn btn-outline-primary"/* onClick={handlesubmit}*/>Next</button></Link>
+  <Link to="/ocr"> <button type="button" className="btn btn-outline-primary">OCR</button></Link> 
+ 
+</div>
       </form>
+
+       
     </div>
-  </div>);
+
+  </div>
+ 
+   
+  
+  );
 
 
 }

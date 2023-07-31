@@ -27,22 +27,27 @@ const Clientdetails = () => {
   
     return (  
     clients.map(client => (  
-        <div className="client-preview" key={client.id} >
-         
-          <h2>{client.name}</h2>
-          <h1>{client.lastname}</h1>
-          <p> { client.cin }</p>
-          <div className="flex space-x-4 ...">
-          <button onClick={handleaccept} className="  bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 rounded-md  text-white">
+      <div className="card" key={client.id}>
+  <div className="card-body">
+    <h5 className="card-title">{client.name}</h5>
+    <h6 className="card-subtitle mb-2 text-body-secondary">{client.lastname}</h6>
+    <p className="card-text">{ client.cin }.</p>
+    <div className="flex space-x-4 ...">
+          <button onClick={handleaccept} className=" btn btn-outline-primary">
   accept
 </button>
- <button onClick={handlerefuse} className="  bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 rounded-md  text-white">
+ <button onClick={handlerefuse} className=" btn btn-outline-primary">
   refuse
 </button></div>
-       
-          
 
-        </div> )
+
+
+
+
+
+
+  </div>
+</div> )
   ));
 }
  
