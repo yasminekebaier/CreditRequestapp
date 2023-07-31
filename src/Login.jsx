@@ -26,6 +26,11 @@ function Login(){
         <TextInput id="password2" required shadow type="password" />
         <Label htmlFor="repeat-password" value="Repeat password" />
         <TextInput id="repeat-password" required shadow type="password" />
+        <div className="input-group">
+  <input type="text" className="form-control" aria-label="Dollar amount (with dot and two decimal places)"/>
+  <span className="input-group-text">$</span>
+  <span className="input-group-text">0.00</span>
+</div>   
 
         <div className="max-w-md" id="fileUpload">
           <div className="mb-2 block">
@@ -48,12 +53,16 @@ function Login(){
             </a>
           </Label>
         </div>
+         
+
+                    
         <button className="bg-blue-600 rounded-md py-2 text-white ">
           <div className="flex items-center text-lg gap-[10px] justify-center">
             Login
             <BsArrowRightShort size={40} />
           </div>
         </button>
+        
       </form>
     </div>
   </div>);

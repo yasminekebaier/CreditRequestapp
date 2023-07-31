@@ -5,6 +5,7 @@ import Navbarr from "./Navbarr";
  import Agent from "./Agent";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Clientdetails from "./Clientdetails";
+import Home from "./Home";
 function App() {
   return (<div>
     <Router>
@@ -12,7 +13,10 @@ function App() {
         <Navbarr />
         <div className="content">
           <Switch>
-            <Route exact path="/">
+          <Route exact path="/">
+               <Home/>
+            </Route>
+            <Route exact path="/login">
               <Login />
             </Route>
             <Route path="/agent">

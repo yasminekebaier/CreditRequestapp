@@ -6,7 +6,8 @@ const Navbarr = () => {
     <nav className="navbar">
       <h1 className="nav-title">bank credit</h1>
       <div className="nav-buttons">
-      <Link className="nav-button home-button" to="/">customer</Link>
+      <Link className="nav-button about-button" to="/">Home</Link>
+      <Link className="nav-button home-button" to="/login">customer</Link>
       <Link className="nav-button about-button" to="/agent">agent</Link>
          
         
