@@ -10,9 +10,7 @@ function Home() {
     <div class="site-blocks-cover overlay"  data-aos="fade" id="home-section">
      <section className='slider'>
     <img src='/images/slide_3.jpg' alt='' />
-    <h1>Banking Solutions</h1>
-    <h2>Savings Accounts <br/>
-    </h2>
+    <h1>Banking Solutions ,Savings Accounts!</h1>
   </section>
     <a href="#next" className="mouse smoothscroll">
         <span className="mouse-icon">
