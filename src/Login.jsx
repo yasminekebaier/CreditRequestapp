@@ -30,8 +30,8 @@ function Login(){
     return(  
     <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
     <div className="w-[500px] h-fit py-[16px] bg-white rounded-3xl border-2 border-gray-300 p-8  ">
-      <h1 className="text-[50px] font-medium">Login    </h1>
-      <p className="text-[18px]">Personal Information: </p>
+      <h1 className="text-[50px] font-medium">Personal Information:  </h1>
+      <p className="text-[18px]"> </p>
        
       <form>
       <div className="mb-3">

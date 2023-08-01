@@ -1,11 +1,12 @@
  
 
 import Login from "./Login";
-import Navbarr from "./Navbarr";
+import Navbarr from "./Components/Navbar/Navbarr";
+import Home from "./Components/LandingPage/Home";
  import Agent from "./Agent";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Clientdetails from "./Clientdetails";
-import Home from "./Home";
+import Clientdetails from "./Components/Clientdetails";
+
 import Ocr from "./Ocr";
  import Login2 from "./Login2"
 function App() {
