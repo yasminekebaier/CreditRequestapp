@@ -5,26 +5,6 @@ const About = () => {
     <>
 <div class="site-section" id="next">
  <div class="container">
-    <div class="row mb-5">
-      <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="">
-        <img src="images/flaticon-svg/svg/001-wallet.svg" alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4"/>
-        <h3 class="card-title">Money Savings</h3>
-       
-      </div>
-      <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="100">
-        <img src="images/flaticon-svg/svg/004-cart.svg" alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4"/>
-        <h3 class="card-title">Online Shoppings</h3>
-        
-      </div>
-      <div class="col-md-4 text-center" data-aos="fade-up" data-aos-delay="200">
-        <img src="images/flaticon-svg/svg/006-credit-card.svg" alt="Free Website Template by Free-Template.co" class="img-fluid w-25 mb-4"/>
-        <h3 class="card-title">Credit / Debit Cards</h3>
-        
-      </div>
-
-    </div>
-   
-
     <div class="row">
       <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
         <figure class="circle-bg">

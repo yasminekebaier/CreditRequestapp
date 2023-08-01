@@ -14,7 +14,7 @@
 .slider h1 {
   position: absolute;
   top: 20%; /* positionnement vertical */
-  left: 20%; /* positionnement horizontal */
+  left: 30%; /* positionnement horizontal */
   transform: translate(-50%, -50%); /* pour centrer le texte */
   color: rgba(0, 0, 0, 0.774); /* couleur du texte */
   font-weight: 900; /* pour mettre le texte en gras */
