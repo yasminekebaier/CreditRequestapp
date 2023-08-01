@@ -6,6 +6,7 @@ const express = require('express');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
 const http = require('http');   
+const UserRoutes = require('./Routes/UserRoutes');
 
 dotenv.config();
 //create an express app 
@@ -21,6 +22,7 @@ connectDatabase();
 http.createServer(app).listen(process.env.PORT, () => {
     console.log(`Process is running on port ${process.env.PORT} in ${process.env.NODE_ENV} mode.`);
 })
+
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -30,3 +32,4 @@ app.use(bodyParser.urlencoded({
 app.use(fileUpload({
     useTempFiles: true
 }));
+app.use('',UserRoutes); 

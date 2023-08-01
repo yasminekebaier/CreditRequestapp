@@ -13,6 +13,9 @@ const mongoose =require('mongoose');
         required : [true, 'name required'], 
         maxlength:[30, 'max le,gth 30 '],
     },
+    phone_number: {
+        type: String
+      },
     national_cardNumber:{
         type : String , 
         validate: {
@@ -31,12 +34,12 @@ const mongoose =require('mongoose');
         required :true , 
     } , 
  //Employement and income details 
- Employement_status : {
+/*  Employement_status : {
     type: String ,
-    //  add validation 
+   
     validate : function( ){
     }
- }
+ } */
 
     
     }
