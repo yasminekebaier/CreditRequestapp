@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const dotenv=require('dotenv'); 
 
+DB_URI='mongodb+srv://user:aPL0lubQkvMCZ9lS@creditrequest.1t3ihrw.mongodb.net/'
+// process.env.DB_URL
 dotenv.config(); 
 const connectDatabase = () => {
-    mongoose.connect(process.env.DB_URL, {
+    
+    mongoose.connect(DB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         //useCreateIndex: false

@@ -1,8 +1,8 @@
 const express = require('express')
 const router=express.Router()
-const UserController = require("../Controllers/UserController")
-router.get('/',UserController.get)
+const {login} = require("../Controllers/UserController")
+
 /* router.get('/verify/:owner/:vtoken',UserController.verify); */
 /* router.get('/verified',UserController.verified); */
-router.post('/signIn',UserController.signIn)
+router.post('/login',login)
 module.exports= router; 

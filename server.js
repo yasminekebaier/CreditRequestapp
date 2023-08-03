@@ -6,7 +6,8 @@ const express = require('express');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
 const http = require('http');   
-const UserRoutes = require('./Routes/UserRoutes');
+const userRoutes = require('./Routes/userRoutes');
+const creditRequest = require('./Routes/creditRequestRoutes'); 
 
 dotenv.config();
 //create an express app 
@@ -32,4 +33,5 @@ app.use(bodyParser.urlencoded({
 app.use(fileUpload({
     useTempFiles: true
 }));
-app.use('',UserRoutes); 
+app.use('',userRoutes); 
+app.use('',creditRequest ); 

@@ -1,0 +1,20 @@
+[
+    {
+        "userName": "ahmed.safta",
+        "email": "ahmedsafta71@gmail.com",
+        "password": "ahmed123",
+        "role": "customer"
+    },
+    {
+        "userName": "amine.jaloul",
+        "email": "amineJaloul@gmail.com",
+        "password": "amine123",
+        "role": "customer"
+    },
+    {
+        "userName": "yasmine.kebaier",
+        "email": "yasminekebaier@gmail.com",
+        "password": "yasmine123",
+        "role": "agent"
+    }
+]

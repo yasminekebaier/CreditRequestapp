@@ -1,46 +1,52 @@
 const mongoose =require('mongoose'); 
 
-
  const  creditRequestSchema=new mongoose.Schema({
-    // Personal info 
-    client_name: {
+    name: {
         type :String, 
         required : [true, 'name required'], 
-        maxlength:[30, 'max le,gth 30 '],
+        maxlength:[30, 'max length 30 '],
     },
-    client_surname : {
+    surname : {
         type :String, 
         required : [true, 'name required'], 
-        maxlength:[30, 'max le,gth 30 '],
+        maxlength:[30, 'max length 30 '],
     },
-    phone_number: {
-        type: String
-      },
-    national_cardNumber:{
-        type : String , 
-        validate: {
-            validator: function(cardNumber){
-                return cardNumber.length==8
-            },
-        message : 'card number length exactly 8 digits'
-        },
-    address : {
-       type:String , 
-       required : true , 
-    //   add staff for validation 
-    }, 
+    cin_number:{
+        type : Number , 
+        required:true,
+    },
+        
+     state :{
+        type : String, 
+        required: true , 
+     }, 
+     address : {
+        type:String , 
+        required : true , 
+     }, 
+     zipCode:{
+        type: Number, 
+        required: true , 
+     },
+     phone_number: {
+        type: Number ,
+        required:true, 
+             },  
+    email :{
+        type :String , 
+        required:true, 
+    },
     birth_date: {
         type :Date ,
         required :true , 
     } , 
- //Employement and income details 
-/*  Employement_status : {
-    type: String ,
-   
-    validate : function( ){
-    }
- } */
 
-    
-    }
  }) 
+ module.exports= mongoose.model('CreditRequest',creditRequestSchema )
+
+
+ // // validate: {
+        // //     validator: function(cin_number){
+        // //         return cin_number.length==8
+        // //     },
+        // },

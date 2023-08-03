@@ -1,80 +1,38 @@
-const UserModel=require("../models/UserModel");
-const bcrypt=require('bcrypt')
+const catchAsyncErrors= require('../middlewares/catchAsyncErrors');
+const  ErrorHandler= require('../utils/errorHandler');
+const User =require( '../models/user'); 
+const {sendToken}= require('../utils/jwtToken')
+
+// get All users 
 module.exports.get= async(req,res)=>{
     const users= await UserModel.find()
-    res.send(users)
-       
+    res.send(users)  
 }
-module.exports.signIn = (req, res) => {
-    // const sessionId = uuidv4();
-    const { username, email, password } = req.body;
+// Login user => /login 
+exports.login = catchAsyncErrors(async (req, res, next) => {
+  const {
+      userName,
+      password
+  } = req.body;
+  // check if  credentials are entred by user 
+  if (!userName || !password) {
+      return next(new ErrorHandler('please  enter your userName & your password', 400));
+  }
+  //finding user in dataBase
+  const user = await User.findOne({
+      userName
+  }).select('+password');
   
-    if ((!username && !email) || !password) {
-      return res.status(400).json({
-        error: true,
-        message: "Username or email and password are required.",
-      });
-    }
+  if (!user) {
+      return next(new ErrorHandler('Invalid Email or Password', 401));
+  }
+  //checks if pasword is correct or not 
   
-    let query;
-    if (username) {
-      query = { username: username };
-    } else {
-      query = { email: email };
-    }
+  const isPasswordMatched = await user.comparePassword(password);
   
-    UserModel.findOne(query)
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            error: true,
-            message: "User not found.",
-          });
-        } else {
-          if (!user.verified) {
-            return res.status(400).json({
-              error: true,
-              status: "FAILED",
-              message: "Email hasn't been verified.",
-            });
-          } else {
-            bcrypt.compare(password, user.password)
-              .then((same) => {
-                if (same) {
-                  const token = jwt.sign({ id: user._id }, privateKey, {
-                    expiresIn: '4h',
-                  });
-                  sessions[sessionId] = { user, userId: user._id };
-                  res.cookie('session', sessionId);
-                  res.cookie('username', user.username);
-  
-  
-                  res.json({ token, user,sessionId,  msg: "Successfully signed in." });
-                  console.log(sessionId);
-                  console.log(user.username);
-  
-                } else {
-                  return res.status(401).json({
-                    error: true,
-                    message: "Invalid password or email.",
-                  });
-                }
-              })
-              .catch((error) => {
-                console.error('Error occurred while comparing passwords:', error);
-                res.status(500).json({
-                  error: true,
-                  message: "Internal server error.",
-                });
-              });
-          }
-        }
-      })
-      .catch((error) => {
-        console.error('Error occurred while signing in:', error);
-        res.status(500).json({
-          error: true,
-          message: "Internal server error.",
-        });
-      });
-  };
+  if (!isPasswordMatched) {
+      return next(new ErrorHandler('Invalid Password', 401));
+  }
+  sendToken(user, 200, res);
+
+  });
