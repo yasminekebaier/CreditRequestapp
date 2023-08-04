@@ -1,0 +1,41 @@
+
+.images-container {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 30px ;
+    margin-left: 40px;
+    margin-right: 400px;
+  }
+  
+  .images-container img {
+    width: 400px; /* Ajustez la taille des images selon vos besoins */
+    height: 200px;
+    margin-right: 40px; /* Marge entre les images */
+  }
+  /* Dans votre fichier CSS ou le style inline */
+.images-container {
+    display: flex;
+   
+    background-color: #f2f2f2; /* Couleur de fond grise */
+    padding: 10px; /* Espacement autour des images et des boutons */
+  }
+  
+  .image-with-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-with-button img {
+  
+    margin-bottom: 10px; /* Marge entre l'image et le bouton */
+  }
+  .blue-button {
+    background-color: #007bff; /* Couleur bleue */
+    color: #fff; /* Couleur du texte */
+    padding: 8px 16px; /* Espacement interne */
+    border: none; /* Supprimer la bordure */
+    border-radius: 4px; /* Bordure arrondie */
+    cursor: pointer;
+    margin-left: 50%;
+  }

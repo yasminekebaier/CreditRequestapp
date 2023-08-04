@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0b0b0b;
+    background-color:#2C0A64;
     padding: 10px;
   }
   
@@ -49,5 +49,5 @@
   .nav-title1 {
     font-size: 24px; /* Ajustez la taille du titre selon vos besoins */
     font-weight: bold;
-    color: #5271FF;
+    color: #fff;
   }
