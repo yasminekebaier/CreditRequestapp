@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Agent (){
     
-    const [clients,setclients] = useState([{name:'amine',lastname:'charrada',cin:'14028875',email: 'jaloul@gmail.com',number:'54701730', id:1}]);
+    const [clients,setclients] = useState([{name:'',lastname:'',email:'',mnumber:'',country:'',city:'',address:'',nid:'',date:'',zip:'',gender:'',month:'1',amount:'5000'}]);
     
     
    /* componentDidMount(){
@@ -16,7 +16,7 @@ function Agent (){
     return(
 <div className="home"><h4>customers:</h4>
       {clients.map(client => (
-        <table className="table align-middle mb-0 bg-white" key={client.id}>
+        <table className="table align-middle mb-0 bg-white" key={client.nid}>
   <thead className="bg-light">
     <tr>
       <th>Name</th>
