@@ -1,53 +1,53 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color:#2C0A64;
-    padding: 10px;
-  }
-  
- 
-  
- 
-  
-  .nav-title {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: transparent;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
-  }
-  
- 
-  
-  
-  .home-button {
-    background-color: #007BFF;
-  }
-  
-  
-  .about-button {
-    background-color: #007BFF;
-  
-  }
-  .logo-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    width: 70px; /* Ajustez la taille du logo selon vos besoins */
-    height: 70px;
-    margin-right: 10px; /* Marge entre le logo et le titre */
-  }
-  
-  .nav-title1 {
-    font-size: 24px; /* Ajustez la taille du titre selon vos besoins */
-    font-weight: bold;
-    color: #fff;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0c0f38;
+  padding: 10px;
+}
+
+
+
+
+
+.nav-title {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+
+
+
+.home-button {
+  background-color: #007BFF;
+}
+
+
+.about-button {
+  background-color: #007BFF;
+
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 70px; /* Ajustez la taille du logo selon vos besoins */
+  height: 70px;
+  margin-right: 10px; /* Marge entre le logo et le titre */
+}
+
+.nav-title1 {
+  font-size: 24px; /* Ajustez la taille du titre selon vos besoins */
+  font-weight: bold;
+  color: #fff;
+}
