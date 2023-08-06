@@ -3,13 +3,18 @@ import { useState } from "react";
  
  import { useTranslation } from 'react-i18next';
 function Login(){
+  const [email,setEmail] = useState("");
+  const[password,setPassword] =useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+  }
 
   const [t]=useTranslation("global")
   const[values,setvalue]=useState({ email:'',password:''})
-  function handleinput(event){
+ /*  function handleinput(event){
     const newobj={...values,[event.target.name]:event.target.value}
     setvalue(newobj)
-  }
+  } */
 
 
 
@@ -21,15 +26,15 @@ function Login(){
       <h1 className="text-[50px] font-medium">{t("login")}  </h1>
        
        
-      <form >
+      <form action="" onSubmit={handleLogin} id="sign-up-form" >
   <div className="mb-3">
     <label htmlFor="exampleInputEmail1" className="form-label">{t("Email address")}</label>
-    <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  onChange={handleinput}/>
+    <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  onChange ={(e)=> setEmail(e.target.value)}/>
     <div id="emailHelp" className="form-text">{t("b")}</div>
   </div>
   <div className="mb-3">
     <label htmlFor="exampleInputPassword1" className="form-label">{t("Password")}</label>
-    <input name="password" type="password" className="form-control" id="exampleInputPassword1"  onChange={handleinput}/>
+    <input name="password" type="password" className="form-control" id="exampleInputPassword1"  onChange ={(e)=> setPassword(e.target.value)}/>
   </div>
   <div className="mb-3 form-check">
     <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
