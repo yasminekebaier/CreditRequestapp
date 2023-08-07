@@ -8,6 +8,20 @@ const dotenv = require('dotenv');
 const http = require('http');   
 const userRoutes = require('./Routes/userRoutes');
 const creditRequest = require('./Routes/creditRequestRoutes'); 
+const cors =require('cors')
+
+// cors config  
+const allowedOrigins = ['http://127.0.0.1:5173'];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 
 dotenv.config();
 //create an express app 
@@ -23,9 +37,9 @@ connectDatabase();
 http.createServer(app).listen(process.env.PORT, () => {
     console.log(`Process is running on port ${process.env.PORT} in ${process.env.NODE_ENV} mode.`);
 })
-
-app.use(helmet());
+app.use(cors(corsOptions)); 
 app.use(express.json());
+app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: true
