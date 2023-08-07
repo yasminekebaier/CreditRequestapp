@@ -1,16 +1,32 @@
 /*import axios from "axios";*/
+import axios from "axios";
 import { useState } from "react";
- 
+
  import { useTranslation } from 'react-i18next';
-function Login(){
-  const [email,setEmail] = useState("");
+const Login=() =>{
+  const [userName,setuserName] = useState("");
   const[password,setPassword] =useState("");
   const handleLogin = (e) => {
     e.preventDefault();
+    axios({
+      method: "post",
+      url:`http://localhost:4000/login`,
+     
+      data:{
+        userName,
+        password,
+       
+      },
+    }).then((res) => {
+      console.log(res)
+      window.location = "/";
+    })  .catch(error => {
+      console.error("Login error:", error);
+    });
   }
 
   const [t]=useTranslation("global")
-  const[values,setvalue]=useState({ email:'',password:''})
+  /* const[values,setvalue]=useState({ email:'',password:''}) */
  /*  function handleinput(event){
     const newobj={...values,[event.target.name]:event.target.value}
     setvalue(newobj)
@@ -20,16 +36,36 @@ function Login(){
 
   
    
-    return(  
-    <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
+    return( 
+      <> 
+      <div>
+      <section className='slide-form'>
+  <div className='container'>
+    <h2>Sign in </h2>
+    <p>Enter your e-mail and password below to log into your account </p>
+    <form action='' onSubmit={handleLogin}>
+    <input type='text' name='email' placeholder='Email'
+     onChange={(e) =>setuserName(e.target.value)}value={userName} />
+     <div className="emailerreur"></div><br/>
+    <input type='password' name='password' placeholder='Password' 
+    onChange={(e) =>setPassword(e.target.value)}value={password}/>
+     <div className="Password erreur"></div><br/>
+  <input type='Submit'  value='se connecter' className='Submit'placeholder='check In' />
+        
+            
+    </form>
+  </div>
+</section>
+  </div>
+    {/* <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
     <div className="w-[500px] h-fit py-[16px] bg-white rounded-3xl border-2 border-gray-300 p-8  ">
       <h1 className="text-[50px] font-medium">{t("login")}  </h1>
        
        
       <form action="" onSubmit={handleLogin} id="sign-up-form" >
   <div className="mb-3">
-    <label htmlFor="exampleInputEmail1" className="form-label">{t("Email address")}</label>
-    <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  onChange ={(e)=> setEmail(e.target.value)}/>
+    <label htmlFor="name" className="form-label">{t("Email address")}</label>
+    <input name="text" type="text" className="form-control" id="text"   onChange ={(e)=> setuserName(e.target.value)}/>
     <div id="emailHelp" className="form-text">{t("b")}</div>
   </div>
   <div className="mb-3">
@@ -47,9 +83,9 @@ function Login(){
        
     </div>
 
-  </div>
+  </div> */}
  
-   
+ </>
   
   );
 
