@@ -34,26 +34,42 @@ function Ocr() {
 <Link to='/login2'>Manuel</Link>
 <Link to='/ocr'>OCR</Link>
 </div>
-<div className="images-container">
-  
-      <div className="image-with-button">
+<div className="images-container row">
+  <div className="col-md-6">
+    <div className="image-with-button">
       <label htmlFor="image-upload1">
-            <img src={image1} alt="Image 1" />
-            <span className="blue-button">Télécharger</span>
-          </label>
-          <input type="file" id="image-upload1" name="file" accept="image/*" 
-          onChange={(e) => handleImageChange(e, setImage1)} style={{ display: "none" }}/>
-      </div>
-      <div className="image-with-button">
-      <img src={image2} alt="Image 2" />
-      <label htmlFor="image-upload2" className="blue-button">Télécharger</label>
-          <input type="file" id="image-upload2" name="file" accept="image/*" 
-          onChange={(e) => handleImageChange(e, setImage2)} style={{ display: "none" }}/>
-      </div>
-    
+        <img src={image1} alt="Image 1" />
+        <span className="blue-button">Télécharger</span>
+      </label>
+      <input
+        type="file"
+        id="image-upload1"
+        name="file"
+        accept="image/*"
+        onChange={(e) => handleImageChange(e, setImage1)}
+        style={{ display: "none" }}
+      />
     </div>
+  </div>
+  <div className="col-md-6">
+    <div className="image-with-button">
+      <label htmlFor="image-upload2">
+        <img src={image2} alt="Image 2" />
+        <span className="blue-button">Télécharger</span>
+      </label>
+      <input
+        type="file"
+        id="image-upload2"
+        name="file"
+        accept="image/*"
+        onChange={(e) => handleImageChange(e, setImage2)}
+        style={{ display: "none" }}
+      />
+    </div>
+  </div>
+</div>
     
-    <form className="row g-3 needs-validation was-validated"  noValidate>
+    <form className="row g-3 needs-validation "  noValidate>
  <div className="col-md-4">
    <label htmlFor="validationCustom01" className="form-label">First name</label>
    <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required/>

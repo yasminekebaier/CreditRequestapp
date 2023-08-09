@@ -1,9 +1,11 @@
 /*import axios from "axios";*/
 import axios from "axios";
 import { useState } from "react";
+import { useHistory } from 'react-router-dom';
 
  import { useTranslation } from 'react-i18next';
 const Login=() =>{
+  const history = useHistory();
   const [userName,setuserName] = useState("");
   const[password,setPassword] =useState("");
   const handleLogin = (e) => {
@@ -15,11 +17,19 @@ const Login=() =>{
       data:{
         userName,
         password,
-       
       },
     }).then((res) => {
-      console.log(res)
-      window.location = "/";
+      
+      const userRole = res.data.user.role;
+     
+      if (userRole === 'agent') {
+        history.push('/agent'); 
+      } else if (userRole === 'customer') {
+        history.push('/login2'); 
+      } else {
+       
+        console.error("Unknown user role:", userRole);
+      }
     })  .catch(error => {
       console.error("Login error:", error);
     });
@@ -38,26 +48,8 @@ const Login=() =>{
    
     return( 
       <> 
-      <div>
-      <section className='slide-form'>
-  <div className='container'>
-    <h2>Sign in </h2>
-    <p>Enter your e-mail and password below to log into your account </p>
-    <form action='' onSubmit={handleLogin}>
-    <input type='text' name='email' placeholder='Email'
-     onChange={(e) =>setuserName(e.target.value)}value={userName} />
-     <div className="emailerreur"></div><br/>
-    <input type='password' name='password' placeholder='Password' 
-    onChange={(e) =>setPassword(e.target.value)}value={password}/>
-     <div className="Password erreur"></div><br/>
-  <input type='Submit'  value='se connecter' className='Submit'placeholder='check In' />
-        
-            
-    </form>
-  </div>
-</section>
-  </div>
-    {/* <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
+   
+     <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20"> 
     <div className="w-[500px] h-fit py-[16px] bg-white rounded-3xl border-2 border-gray-300 p-8  ">
       <h1 className="text-[50px] font-medium">{t("login")}  </h1>
        
@@ -83,7 +75,7 @@ const Login=() =>{
        
     </div>
 
-  </div> */}
+  </div> 
  
  </>
   
