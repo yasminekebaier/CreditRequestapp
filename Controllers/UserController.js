@@ -12,7 +12,8 @@ module.exports.get= async(req,res)=>{
 exports.login = catchAsyncErrors(async (req, res, next) => {
   const {
       userName,
-      password
+      password,
+     
   } = req.body;
   // check if  credentials are entred by user 
   if (!userName || !password) {
@@ -33,6 +34,10 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
   if (!isPasswordMatched) {
       return next(new ErrorHandler('Invalid Password', 401));
   }
-  sendToken(user, 200, res);
+  const userRole = user.role;
+   // Assurez-vous que la propriété de rôle existe dans le modèle User
+   console.log(userRole)
+  sendToken(user, 200, res, userRole);
+ 
 
   });

@@ -16,7 +16,7 @@ const mongoose =require('mongoose');
         required:true,
     },
         
-     state :{
+     city:{
         type : String, 
         required: true , 
      }, 
@@ -40,6 +40,11 @@ const mongoose =require('mongoose');
         type :Date ,
         required :true , 
     } , 
+    status: {
+        type: String,
+        required:true,
+        Default:"Deny"
+    }
 
  }) 
  module.exports= mongoose.model('CreditRequest',creditRequestSchema )
