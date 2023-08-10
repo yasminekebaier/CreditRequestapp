@@ -1,21 +1,43 @@
 import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import './ocr.css'
 import './range.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
  
 
 function Ocr() {
+
   
   const [image1, setImage1] = useState("images/CIN1.png");
   const [image2, setImage2] = useState("images/CIN2.png");
  
-  const[values,setvalue]=useState({name:'',lastname:'',email:'',mnumber:'',country:'',city:'',address:'',nid:'',date:'',zip:'',gender:'',month:'1',amount:'5000'})
+  const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
   function handleinput(event){
-    const newobj={...values,[event.target.name]:event.target.value}
-    setvalue(newobj)
+    setvalue((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: event.target.value,
+    }));
   }
-   
+  useEffect(() => { 
+    (() => {
+      'use strict'
+    
+       
+      const forms = document.querySelectorAll('.needs-validation')
+    
+     
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+    
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+    }, []);
 
 
   const handleImageChange = (event, setImageFunction) => {
@@ -69,7 +91,7 @@ function Ocr() {
   </div>
 </div>
     
-    <form className="row g-3 needs-validation "  noValidate>
+    <form className="row g-3 needs-validation  "    noValidate>
  <div className="col-md-4">
    <label htmlFor="validationCustom01" className="form-label">First name</label>
    <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required/>
@@ -80,7 +102,7 @@ function Ocr() {
  </div>
  <div className="col-md-4">
    <label htmlFor="validationCustom02" className="form-label">Lastname</label>
-   <input name='lastname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required/>
+   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required/>
    <div className="invalid-feedback">
        Please choose a lastname.
      </div>
@@ -98,13 +120,13 @@ function Ocr() {
 
  <div className="col-md-4">
    <label htmlFor="Mobil Number" className="form-label">Mobil Number</label>
-   <input name='mnumber' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
+   <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
    <div className="invalid-feedback">
-     Please provide a valid NID.
+     Please provide a  Mobil Number.
    </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="Country" className="form-label">Country</label>
+   <label htmlFor="country" className="form-label">Country</label>
    <input name='country' type="text" className="form-control" id="Country" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid Country.
@@ -129,21 +151,21 @@ function Ocr() {
 
    <div className="col-md-4">
    <label htmlFor="NID" className="form-label">NID</label>
-   <input name='nid' type="text" className="form-control" id="NID" onChange={handleinput}  required/>
+   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid NID.
    </div></div>
 
    <div className="col-md-4">
-   <label htmlFor="date" className="form-label">date of birth</label>
-   <input name='date' type="date" className="form-control" id="date" onChange={handleinput}  required/>
+   <label htmlFor="birth_date" className="form-label">date of birth</label>
+   <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid date of birth.
    </div></div>
    
    <div className="col-md-3">
    <label htmlFor="validationCustom05" className="form-label">Zip</label>
-   <input name='zip' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
+   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid zip.
    </div>

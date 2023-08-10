@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
@@ -12,7 +12,26 @@ function handleinput(event){
     [event.target.name]: event.target.value,
   }));
 }
-
+useEffect(() => { 
+  (() => {
+    'use strict'
+  
+     
+    const forms = document.querySelectorAll('.needs-validation')
+  
+   
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+  
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+  }, []);
 
 function handelsabmit(event){
   setStatus("Pending");
@@ -43,10 +62,10 @@ axios({
  <Link to='/ocr'>OCR </Link>
  </div>
 
- <form className="row g-3 needs-validation was-validated" onSubmit={handelsabmit}  >
+ <form className="row g-3 needs-validation  "  onSubmit={handelsabmit}  noValidate>
  <div className="col-md-4">
    <label htmlFor="validationCustom01" className="form-label">First name</label>
-   <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  />
+   <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required/>
    <div className="invalid-feedback">
    Please choose a name.
       </div>
@@ -54,7 +73,7 @@ axios({
  </div>
  <div className="col-md-4">
    <label htmlFor="validationCustom02" className="form-label">Lastname</label>
-   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    />
+   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required/>
    <div className="invalid-feedback">
        Please choose a lastname.
      </div>
@@ -63,7 +82,7 @@ axios({
    <label htmlFor="validationCustomUsername" className="form-label">Email</label>
    <div className="input-group has-validation">
      <span className="input-group-text" id="inputGroupPrepend">@</span>
-     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  />
+     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  required/>
      <div className="invalid-feedback">
        Please provide a Email.
      </div>
@@ -72,14 +91,14 @@ axios({
 
  <div className="col-md-4">
    <label htmlFor="Mobil Number" className="form-label">Mobil Number</label>
-   <input name='phone_number' type="number" className="form-control" id="phone_number" onChange={handleinput}   />
+   <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
    <div className="invalid-feedback">
-     Please provide a valid NID.
+     Please provide a  Mobil Number.
    </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="Country" className="form-label">Country</label>
-   <input name='country' type="text" className="form-control" id="Country" onChange={handleinput}  />
+   <label htmlFor="country" className="form-label">Country</label>
+   <input name='country' type="text" className="form-control" id="Country" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid Country.
    </div></div>
@@ -87,7 +106,7 @@ axios({
 
    <div className="col-md-4">
    <label htmlFor="validationCustom03" className="form-label">City</label>
-   <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  />
+   <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid city.
    </div>
@@ -95,7 +114,7 @@ axios({
 
  <div className="col-md-4">
    <label htmlFor="Address" className="form-label">Address</label>
-   <input name='address' type="text" className="form-control" id="Address" required onChange={handleinput} />
+   <input name='address' type="text" className="form-control" id="Address" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid Address.
    </div></div>
@@ -103,21 +122,21 @@ axios({
 
    <div className="col-md-4">
    <label htmlFor="NID" className="form-label">NID</label>
-   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  />
+   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid NID.
    </div></div>
 
    <div className="col-md-4">
-   <label htmlFor="date" className="form-label">date of birth</label>
-   <input name='birth_date' type="date" className="form-control" id="date" onChange={handleinput} />
+   <label htmlFor="birth_date" className="form-label">date of birth</label>
+   <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid date of birth.
    </div></div>
    
    <div className="col-md-3">
    <label htmlFor="validationCustom05" className="form-label">Zip</label>
-   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  />
+   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
    <div className="invalid-feedback">
      Please provide a valid zip.
    </div>
@@ -127,7 +146,7 @@ axios({
  <div className="col-md-3">
    <label htmlFor="validationCustom04" className="form-label">
  </label>
-   <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput}  >
+   <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput}  required>
      <option selected disabled value="">Gender</option>
      <option value='m'>male</option>
      <option value='f' >female</option>
@@ -139,7 +158,7 @@ axios({
 
  <div className="col-12">
    <div className="form-check">
-     <input className="form-check-input" type="checkbox" value="" id="invalidCheck" />
+     <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
      <label className="form-check-label" htmlFor="invalidCheck">
        Agree to terms and conditions
      </label>
