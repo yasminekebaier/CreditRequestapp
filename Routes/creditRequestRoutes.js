@@ -8,6 +8,6 @@ const {registerRequest, getAllRequests,getRequestById,updateRequestById} = requi
 router.route('/creditRequest/new',isAuthenticatedUser).post(registerRequest); 
 router.route('/creditRequest/show',isAuthenticatedUser,authorizedRoles('agent')).get(getAllRequests)
 router.route('/creditRequest/show/:id',isAuthenticatedUser,authorizedRoles('agent')).get(getRequestById)
-router.route('/creditRequest/update/:id',isAuthenticatedUser, authorizedRoles('agent')).get(updateRequestById)
+router.route('/creditRequest/update/:id',isAuthenticatedUser, authorizedRoles('agent')).put(updateRequestById)
 
 module.exports= router; 
