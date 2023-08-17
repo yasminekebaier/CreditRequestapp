@@ -61,7 +61,7 @@ function Agent (){
       
       <td>{client.cin}</td>
       <td>
-      <Link to={`/client/${client.id}`}> <button type="button" className="btn btn-link btn-sm btn-rounded">
+      <Link to={`/client/${client._id}`}> <button type="button" className="btn btn-link btn-sm btn-rounded">
           Details
         </button></Link>
       </td>

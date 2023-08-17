@@ -2,14 +2,64 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import './ocr.css'
 import './range.css'
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import ReactCrop from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 
  
 
 function Ocr() {
 
-  
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [src ,selectFile]=useState(null)
+  const handelfile = (e) =>{
+      selectFile(URL.createObjectURL(e.target.files[0]))
+
+  }
+  const updateImage1 = (croppedImage) => {
+    setImage1(croppedImage);
+  }
+  const [crop,setCrop]=useState({aspect: 16/ 9});
+  const [result,setResult]=useState(null)
   const [image1, setImage1] = useState("images/CIN1.png");
   const [image2, setImage2] = useState("images/CIN2.png");
+  const getcroppe = async () => {
+    if (src) {
+        const image = new Image();
+        image.src = src;
+  
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight /image.height;
+  
+        const canvas = document.createElement('canvas');
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+  
+        const ctx = canvas.getContext('2d');
+  
+        await new Promise((resolve) => {
+          image.onload = () => {
+            ctx.drawImage(
+              image,
+              crop.x ,
+              crop.y ,
+              crop.width ,
+              crop.height ,
+              0,
+              0,
+              crop.width,
+              crop.height
+            );
+  
+            const base64Image = canvas.toDataURL('image/jpeg');
+            setResult(base64Image);
+            setCroppedImage(base64Image);
+            resolve();
+          };
+        });
+      }
+    };
  
   const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
   function handleinput(event){
@@ -49,6 +99,7 @@ function Ocr() {
     if (file) {
       reader.readAsDataURL(file);
     }}
+
   return (
    
     <div className="w-auto p-3 ">
@@ -60,17 +111,39 @@ function Ocr() {
   <div className="col-md-6">
     <div className="image-with-button">
       <label htmlFor="image-upload1">
-        <img src={image1} alt="Image 1" />
+      <img src={croppedImage || image1} alt="Image 1" />
         <span className="blue-button">Télécharger</span>
+        <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Recadrer</button>
+       {/*  model */}
+       <Modal
+  isOpen={modalIsOpen}
+  onRequestClose={() => setModalIsOpen(false)}
+  contentLabel="Recadrage d'image"
+>
+  {/* Contenu de la fenêtre modale */}
+  <div className='row'>
+    <div className='col-6'>
+      <input type='file' accept='image/*' onChange={handelfile}/>
+    </div>
+    {src && (
+  <div className='clo-6' >
+    <ReactCrop crop={crop} onImageLoaded={setImage1} onChange={setCrop}>
+      <img src={src} alt='Selected for cropping' style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }} />
+    </ReactCrop>
+    <button className='btn btn-danger' onClick={async () => {
+      await getcroppe();
+      setModalIsOpen(false);
+      updateImage1(result); // Mettre à jour l'image1 avec le résultat du recadrage
+    }}>Crop image</button>
+  </div>
+)}
+  </div>
+ 
+</Modal>
+{/* finmodel */}
       </label>
-      <input
-        type="file"
-        id="image-upload1"
-        name="file"
-        accept="image/*"
-        onChange={(e) => handleImageChange(e, setImage1)}
-        style={{ display: "none" }}
-      />
+    
+      
     </div>
   </div>
   <div className="col-md-6">
