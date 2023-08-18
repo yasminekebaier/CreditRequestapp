@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-
+import { useTranslation } from 'react-i18next';
 import './range.css'
 function Login2() {
+  const [t]=useTranslation("global")
 const [status,setStatus]= useState('Deny')
  const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
 function handleinput(event){
@@ -58,87 +59,87 @@ axios({
  
     <div className="w-auto p-3 ">
      <div className="flex space-x-4 ..."> 
- <Link to='/login2'>Manuel</Link>
- <Link to='/ocr'>OCR </Link>
+ <Link to='/login2'>{t('Manuel')}</Link>
+ <Link to='/ocr'>  {t('ocr')}</Link>
  </div>
 
  <form className="row g-3 needs-validation  "  onSubmit={handelsabmit}  noValidate>
  <div className="col-md-4">
-   <label htmlFor="validationCustom01" className="form-label">First name</label>
+   <label htmlFor="validationCustom01" className="form-label">{t('First name')}</label>
    <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-   Please choose a name.
+   {t('error1')}
       </div>
    
  </div>
  <div className="col-md-4">
-   <label htmlFor="validationCustom02" className="form-label">Lastname</label>
+   <label htmlFor="validationCustom02" className="form-label">{t('Lastname')}</label>
    <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required/>
    <div className="invalid-feedback">
-       Please choose a lastname.
+        {t('error2')}
      </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="validationCustomUsername" className="form-label">Email</label>
+   <label htmlFor="validationCustomUsername" className="form-label">{t('Email')}</label>
    <div className="input-group has-validation">
      <span className="input-group-text" id="inputGroupPrepend">@</span>
      <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  required/>
      <div className="invalid-feedback">
-       Please provide a Email.
+        {t('error3')}
      </div>
    </div>
  </div> 
 
  <div className="col-md-4">
-   <label htmlFor="Mobil Number" className="form-label">Mobil Number</label>
+   <label htmlFor="Mobil Number" className="form-label">{t('Mobil Number')}</label>
    <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
    <div className="invalid-feedback">
-     Please provide a  Mobil Number.
+       {t('error4')}
    </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="country" className="form-label">Country</label>
+   <label htmlFor="country" className="form-label">{t('Country')}</label>
    <input name='country' type="text" className="form-control" id="Country" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid Country.
+      {t('error5')}
    </div></div>
 
 
    <div className="col-md-4">
-   <label htmlFor="validationCustom03" className="form-label">City</label>
+   <label htmlFor="validationCustom03" className="form-label">{t('City')}</label>
    <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid city.
+      {t('error6')}
    </div>
  </div>
 
  <div className="col-md-4">
-   <label htmlFor="Address" className="form-label">Address</label>
+   <label htmlFor="Address" className="form-label">{t('Address')}</label>
    <input name='address' type="text" className="form-control" id="Address" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid Address.
+      {t('error7')}
    </div></div>
 
 
    <div className="col-md-4">
-   <label htmlFor="NID" className="form-label">NID</label>
+   <label htmlFor="NID" className="form-label"> {t('NID')}</label>
    <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid NID.
+      {t('error8')}
    </div></div>
 
    <div className="col-md-4">
-   <label htmlFor="birth_date" className="form-label">date of birth</label>
+   <label htmlFor="birth_date" className="form-label"> {t('date')}</label>
    <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid date of birth.
+      {t('error9')}
    </div></div>
    
    <div className="col-md-3">
-   <label htmlFor="validationCustom05" className="form-label">Zip</label>
+   <label htmlFor="validationCustom05" className="form-label">{t('Zip')}</label>
    <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid zip.
+      {t('error10')}
    </div>
  </div>
 
@@ -147,12 +148,12 @@ axios({
    <label htmlFor="validationCustom04" className="form-label">
  </label>
    <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput}  required>
-     <option selected disabled value="">Gender</option>
-     <option value='m'>male</option>
-     <option value='f' >female</option>
+     <option selected disabled value="">{t('Gender')}</option>
+     <option value='m'>{t('male')}</option>
+     <option value='f' >{t('female')}</option>
    </select>
    <div className="invalid-feedback">
-     Please select a valid Gender.
+      {t('error11')}
    </div>
  </div>
 
@@ -160,10 +161,10 @@ axios({
    <div className="form-check">
      <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
      <label className="form-check-label" htmlFor="invalidCheck">
-       Agree to terms and conditions
+      {t('conditions')}
      </label>
      <div className="invalid-feedback">
-       You must agree before submitting.
+        {t('error12')}
      </div>
    </div>
  </div>
@@ -172,30 +173,30 @@ axios({
 
 
 
- <label className="form-label" htmlFor="customRange1">Loan term</label>
+ <label className="form-label" htmlFor="customRange1">{t('Loan term')}</label>
 <div className="position-relative">
 <div className="range">
-  <div className="position-absolute top-0 start-0">1Month</div>
-  <div className="position-absolute top-0 end-0">240Month</div>
+  <div className="position-absolute top-0 start-0">{t('1Month')}</div>
+  <div className="position-absolute top-0 end-0">{t('240Month')}</div>
   <div className="position-absolute top-50 start-50"></div><input name="month" type="range" className="form-range" min="1" max="240" id="customRange1" value={values.month}   onChange={handleinput} step='1'/>
-  <h1>{values.month}Month</h1></div></div>
+  <h1>{values.month}{t('Month')}</h1></div></div>
  
  
 
 
 
-  <label className="form-label" htmlFor="customRange2">Loan Amount</label>
+  <label className="form-label" htmlFor="customRange2">{t('Loan Amount')}</label>
 <div className="position-relative">
 <div className="range">
   <div className="position-absolute top-0 start-0">5000</div>
   <div className="position-absolute top-0 end-0">100000</div>
   <div className="position-absolute top-50 start-50"></div><input name="amount" type="range" className="form-range" min="5000" max="100000"   id="customRange2" value={values.amount} onChange={handleinput} step='100'/>
-  <h1>{values.amount}TND</h1></div></div>
+  <h1>{values.amount}{t('TND')}</h1></div></div>
  
 
  
  <div className="col-12">
-   <button className="btn btn-outline-primary" type="submit">Submit form</button>
+   <button className="btn btn-outline-primary" type="submit">finish </button>
  </div>
   
 </form>

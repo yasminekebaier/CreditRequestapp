@@ -10,6 +10,11 @@ const Navbarr = () => {
   const handelchange = (lang)=>{
    
     i18n.changeLanguage(lang);
+  if(lang==="ar") 
+  {document.body.dir='rtl'}
+  else{document.body.dir='ltr'}
+
+
   };
   return (
 
@@ -22,8 +27,8 @@ const Navbarr = () => {
        
       <div className="nav-links">
       <select onChange={(e)=>handelchange(e.target.value)} className="form-select-font-size-sm  mix-blend-color-dodge" aria-label="Default select example">
-      <option value="en" selected >  ENGLISH </option>
-      <option value="ar"  >  ARABE </option>
+      <option value="en" selected > {t("ENGLISH")} </option>
+      <option value="ar"  >  {t("ARABE")} </option>
       
     </select>
      

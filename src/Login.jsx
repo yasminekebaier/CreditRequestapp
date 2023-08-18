@@ -58,7 +58,7 @@ const Login=() =>{
   <div className="mb-3">
     <label htmlFor="name" className="form-label">{t("Email address")}</label>
     <input name="text" type="text" className="form-control" id="text"   onChange ={(e)=> setuserName(e.target.value)}/>
-    <div id="emailHelp" className="form-text">{t("b")}</div>
+    <div id="emailHelp" className="form-text">{t("bb")}</div>
   </div>
   <div className="mb-3">
     <label htmlFor="exampleInputPassword1" className="form-label">{t("Password")}</label>

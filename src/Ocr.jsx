@@ -1,12 +1,15 @@
+import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import './ocr.css'
 import './range.css'
 import { useEffect, useState } from 'react';
+import axios from "axios"
+import { useTranslation } from 'react-i18next';
+import translate from "translate";
 import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
- 
 
 function Ocr() {
 
@@ -61,13 +64,14 @@ function Ocr() {
       }
     };
  
-  const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
+  const[values,setValues]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
   function handleinput(event){
-    setvalue((prevValues) => ({
+    setValues((prevValues) => ({
       ...prevValues,
       [event.target.name]: event.target.value,
     }));
   }
+  const [t]=useTranslation("global")
   useEffect(() => { 
     (() => {
       'use strict'
@@ -90,30 +94,68 @@ function Ocr() {
     }, []);
 
 
-  const handleImageChange = (event, setImageFunction) => {
+  const handleImageChange = async (event, setImageFunction) => {
+    try {
+      const text = await translate("أمين بن شرادة", { from: 'ar', to: 'en' });
+      console.log(text);
+
+    }
+    catch(error ){
+      console.log("the error is ", error )
+    }
+  
+    
+
     const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageFunction(reader.result);
     };
+  
     if (file) {
       reader.readAsDataURL(file);
-    }}
+    }
+   
+    //  send axios request to flak api 
+
+    try {
+      const response = await axios.post('http://localhost:5000/flask_api/front_image_info', formData);
+      setValues(prevValues => ({
+        ...prevValues,
+        name: response.data.data.cr_name1,
+        surname: response.data.data.cr_surname,
+        birth_Date: response.data.cr_birthDate,
+        city: response.data.data.cr_state,
+        cin_number: response.data.data.cr_number,
+
+      }));
+      const [t]=useTranslation("global")
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  
+  
+  
+  }
 
   return (
    
     <div className="w-auto p-3 ">
     <div className="flex space-x-4 ..."> 
-<Link to='/login2'>Manuel</Link>
-<Link to='/ocr'>OCR</Link>
+<Link to='/login2'>{t('Manuel')}</Link>
+<Link to='/ocr'>    {t('ocr')}</Link>
 </div>
 <div className="images-container row">
   <div className="col-md-6">
     <div className="image-with-button">
       <label htmlFor="image-upload1">
       <img src={croppedImage || image1} alt="Image 1" />
-        <span className="blue-button">Télécharger</span>
-        <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Recadrer</button>
+        <span className="blue-button">{t('Download')}</span>
+        <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Crop</button>
        {/*  model */}
        <Modal
   isOpen={modalIsOpen}
@@ -131,9 +173,13 @@ function Ocr() {
       <img src={src} alt='Selected for cropping' style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }} />
     </ReactCrop>
     <button className='btn btn-danger' onClick={async () => {
+      console.log("the value of the image has changed ",result )
       await getcroppe();
       setModalIsOpen(false);
       updateImage1(result); // Mettre à jour l'image1 avec le résultat du recadrage
+      
+    
+
     }}>Crop image</button>
   </div>
 )}
@@ -150,7 +196,7 @@ function Ocr() {
     <div className="image-with-button">
       <label htmlFor="image-upload2">
         <img src={image2} alt="Image 2" />
-        <span className="blue-button">Télécharger</span>
+        <span className="blue-button">{t('Download')}</span>
       </label>
       <input
         type="file"
@@ -164,83 +210,83 @@ function Ocr() {
   </div>
 </div>
     
-    <form className="row g-3 needs-validation  "    noValidate>
+    <form className="row g-3 needs-validation  " noValidate>
  <div className="col-md-4">
-   <label htmlFor="validationCustom01" className="form-label">First name</label>
-   <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required/>
+   <label htmlFor="validationCustom01" className="form-label">{t("First name")}</label>
+   <input name='name' type="text" className="form-control" id="validationCustom01"value={values.name} onChange={handleinput}  required/>
    <div className="invalid-feedback">
-   Please choose a name.
+   {t('error1')}
       </div>
    
  </div>
  <div className="col-md-4">
-   <label htmlFor="validationCustom02" className="form-label">Lastname</label>
-   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required/>
+   <label htmlFor="validationCustom02" className="form-label">{t("Last Name")}</label>
+   <input name='surname' type="text" className="form-control" id="validationCustom02"value={values.surname} onChange={handleinput}    required/>
    <div className="invalid-feedback">
-       Please choose a lastname.
+   {t('error2')}
      </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="validationCustomUsername" className="form-label">Email</label>
+   <label htmlFor="validationCustomUsername" className="form-label">{t("Email")}</label>
    <div className="input-group has-validation">
      <span className="input-group-text" id="inputGroupPrepend">@</span>
-     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  required/>
+     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend"  value={values.email} onChange={handleinput}  required/>
      <div className="invalid-feedback">
-       Please provide a Email.
+     {t('error3')}
      </div>
    </div>
  </div> 
 
  <div className="col-md-4">
-   <label htmlFor="Mobil Number" className="form-label">Mobil Number</label>
-   <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
+   <label htmlFor="Mobil Number" className="form-label">{t("Mobile Number")}</label>
+   <input name='phone_number' type="text" className="form-control" id="Mobil Number" value={values.phone_number}  onChange={handleinput}   required/>
    <div className="invalid-feedback">
-     Please provide a  Mobil Number.
+   {t('error4')}
    </div>
  </div>
  <div className="col-md-4">
-   <label htmlFor="country" className="form-label">Country</label>
-   <input name='country' type="text" className="form-control" id="Country" onChange={handleinput}  required/>
+   <label htmlFor="country" className="form-label">{t("Country")}</label>
+   <input name='country' type="text" className="form-control" id="Country" value={values.country} onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid Country.
+   {t('error5')}
    </div></div>
 
 
    <div className="col-md-4">
-   <label htmlFor="validationCustom03" className="form-label">City</label>
-   <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  required/>
+   <label htmlFor="validationCustom03" className="form-label">{t("City")}</label>
+   <input name='city' type="text" className="form-control" id="validationCustom03" value={values.city}  onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid city.
+   {t('error6')}
    </div>
  </div>
 
  <div className="col-md-4">
-   <label htmlFor="Address" className="form-label">Address</label>
-   <input name='address' type="text" className="form-control" id="Address" onChange={handleinput}  required/>
+   <label htmlFor="Address" className="form-label">{t("Address")}</label>
+   <input name='address' type="text" className="form-control" id="Address" value={values.address} onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid Address.
+   {t('error7')}
    </div></div>
 
 
    <div className="col-md-4">
-   <label htmlFor="NID" className="form-label">NID</label>
-   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required/>
+   <label htmlFor="NID" className="form-label">{t("NID")}</label>
+   <input name='cin_number' type="text" className="form-control" id="NID" value={values.cin_number}  onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid NID.
+   {t('error8')}
    </div></div>
 
    <div className="col-md-4">
-   <label htmlFor="birth_date" className="form-label">date of birth</label>
-   <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required/>
+   <label htmlFor="birth_date" className="form-label">{t("Date")}</label>
+   <input name='birth_date' type="String" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid date of birth.
+   {t('error9')}
    </div></div>
    
    <div className="col-md-3">
-   <label htmlFor="validationCustom05" className="form-label">Zip</label>
-   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
+   <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
+   <input name='zipCode' type="text" className="form-control" id="validationCustom05"value={values.zipCode} onChange={handleinput}  required/>
    <div className="invalid-feedback">
-     Please provide a valid zip.
+   {t('error10')}
    </div>
  </div>
 
@@ -249,12 +295,12 @@ function Ocr() {
    <label htmlFor="validationCustom04" className="form-label">
  </label>
    <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput}  required>
-     <option selected disabled value="">Gender</option>
-     <option value='m'>male</option>
-     <option value='f' >female</option>
+     <option selected disabled value="">{t('Gender')}</option>
+     <option value='m'>{t('male')}</option>
+     <option value='f' >{t('female')}</option>
    </select>
    <div className="invalid-feedback">
-     Please select a valid Gender.
+   {t('error11')}
    </div>
  </div>
 
@@ -262,10 +308,10 @@ function Ocr() {
    <div className="form-check">
      <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
      <label className="form-check-label" htmlFor="invalidCheck">
-       Agree to terms and conditions
+     {t('conditions')}
      </label>
      <div className="invalid-feedback">
-       You must agree before submitting.
+        {t('error12')}
      </div>
    </div>
  </div>
@@ -274,30 +320,30 @@ function Ocr() {
 
 
 
- <label className="form-label" htmlFor="customRange1">Loan term</label>
+ <label className="form-label" htmlFor="customRange1">{t('Loan term')}</label>
 <div className="position-relative">
 <div className="range">
-  <div className="position-absolute top-0 start-0">1Month</div>
-  <div className="position-absolute top-0 end-0">240Month</div>
+  <div className="position-absolute top-0 start-0">{t('1Month')}</div>
+  <div className="position-absolute top-0 end-0">{t('240Month')}</div>
   <div className="position-absolute top-50 start-50"></div><input name="month" type="range" className="form-range" min="1" max="240" id="customRange1" value={values.month}   onChange={handleinput} step='1'/>
-  <h1>{values.month}Month</h1></div></div>
+  <h1>{values.month}{t('Month')}</h1></div></div>
  
  
 
 
 
-  <label className="form-label" htmlFor="customRange2">Loan Amount</label>
+  <label className="form-label" htmlFor="customRange2">{t('Loan Amount')}</label>
 <div className="position-relative">
 <div className="range">
   <div className="position-absolute top-0 start-0">5000</div>
   <div className="position-absolute top-0 end-0">100000</div>
   <div className="position-absolute top-50 start-50"></div><input name="amount" type="range" className="form-range" min="5000" max="100000"   id="customRange2" value={values.amount} onChange={handleinput} step='100'/>
-  <h1>{values.amount}TND</h1></div></div>
+  <h1>{values.amount}{t('TND')}</h1></div></div>
  
 
  
  <div className="col-12">
-   <button className="btn btn-outline-primary" type="submit">Submit form</button>
+ <button className="btn btn-outline-primary" type="submit">finish </button>
  </div>
   
 </form>

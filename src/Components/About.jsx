@@ -1,37 +1,38 @@
 import React from 'react'
-
+import { useTranslation } from 'react-i18next';
 const About = () => {
+   const [t]=useTranslation("global")
   return (
     <>
-<div id="service" class="Services">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>Best Services</h2>
+<div id="service" className="Services">
+         <div className="container">
+            <div className="row">
+               <div className="col-md-12">
+                  <div className="titlepage">
+                     <h2> {t('a')}</h2>
                   </div>
                </div>
             </div>
-            <div class="row">
-               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                  <div class="Services-box">
+            <div className="row">
+               <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                  <div className="Services-box">
                      <i><img src="images/svg/006-credit-card.svg" alt="#" /></i>
-                     <h3> Account Management</h3>
-                     <p>Users can view their account balances, transaction history, and account details in real-time</p>
+                     <h3> {t('b')}</h3>
+                     <p>{t('c')}</p>
                   </div>
                </div>
-               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                  <div class="Services-box">
+               <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                  <div className="Services-box">
                      <i><img src="/images/svg/002-rich.svg" alt="#" /></i>
-                     <h3>Loan Applications</h3>
-                     <p>apply for loans, including personal loans, car loans,check their eligibility and receive loan offers</p>
+                     <h3>{t('d')}</h3>
+                     <p>{t('e')}</p>
                   </div>
                </div>
-               <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                  <div class="Services-box">
+               <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                  <div className="Services-box">
                      <i><img src="/images/svg/003-notes.svg" alt="#" /></i>
-                     <h3>Card Controls</h3>
-                     <p>manage their debit and credit card settings,activating and deactivating cards, setting spending limits</p>
+                     <h3>{t('f')}</h3>
+                     <p> {t('g')}</p>
                   </div>
                </div>
               
