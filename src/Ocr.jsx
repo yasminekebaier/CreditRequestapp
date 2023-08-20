@@ -64,7 +64,7 @@ function Ocr() {
       }
     };
  
-  const[values,setValues]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
+  const[values,setValues]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:'',job:'',motherName:'',NID_creation_date:''})
   function handleinput(event){
     setValues((prevValues) => ({
       ...prevValues,
@@ -220,7 +220,7 @@ function Ocr() {
    
  </div>
  <div className="col-md-4">
-   <label htmlFor="validationCustom02" className="form-label">{t("Last Name")}</label>
+   <label htmlFor="validationCustom02" className="form-label">{t("Lastname")}</label> 
    <input name='surname' type="text" className="form-control" id="validationCustom02"value={values.surname} onChange={handleinput}    required/>
    <div className="invalid-feedback">
    {t('error2')}
@@ -238,7 +238,7 @@ function Ocr() {
  </div> 
 
  <div className="col-md-4">
-   <label htmlFor="Mobil Number" className="form-label">{t("Mobile Number")}</label>
+   <label htmlFor="Mobil Number" className="form-label">{t("Mobile Number")}</label> 
    <input name='phone_number' type="text" className="form-control" id="Mobil Number" value={values.phone_number}  onChange={handleinput}   required/>
    <div className="invalid-feedback">
    {t('error4')}
@@ -276,17 +276,43 @@ function Ocr() {
    </div></div>
 
    <div className="col-md-4">
-   <label htmlFor="birth_date" className="form-label">{t("Date")}</label>
-   <input name='birth_date' type="String" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput}  required/>
+   <label htmlFor="birth_date" className="form-label">{t('date')}</label>
+   <input name='birth_date' type="date" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput}  required/>
    <div className="invalid-feedback">
    {t('error9')}
    </div></div>
    
-   <div className="col-md-3">
+   <div className="col-md-4">
    <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
-   <input name='zipCode' type="text" className="form-control" id="validationCustom05"value={values.zipCode} onChange={handleinput}  required/>
+   <input name='zipCode' type="text" className="form-control" id="validationCustom05" value={values.zipCode} onChange={handleinput}  required/>
    <div className="invalid-feedback">
    {t('error10')}
+   </div>
+ </div>
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
+   <input name='job' type="text" className="form-control" id="validationCustom111" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error13')}
+   </div>
+ </div>
+
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
+   <input name='motherName' type="text" className="form-control" id="validationCustom112" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error14')}
+   </div>
+ </div>
+
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
+   <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error15')}
    </div>
  </div>
 

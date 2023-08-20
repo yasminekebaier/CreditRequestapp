@@ -14,7 +14,7 @@
 "error2":"Please choose a lastname."
     ,"Email":"Email",
     "error3":"Please provide a Email."
-    ,"Mobil Number":"Mobil Number"
+    ,"Mobile Number":"Mobil Number"
     ,"error4":"Please provide a  Mobil Number.",
     "Country":"Country",
     "error5":"Please provide a valid Country.",
@@ -34,6 +34,13 @@
     "error11":"Please select a valid Gender.",
     "conditions":"Agree to terms and conditions",
     "error12":"You must agree before submitting.",
+    "JOB":"JOB",
+    "error13":"Please provide a valid JOB.",
+    "mother name":"mother name",
+    "error14":"Please provide a valid mother name.",
+     "NIDdate":"NID creation date",
+    "error15":"Please provide a valid NID creation date.",
+
     "Loan term":"Loan term",
     "1Month":"1Month",
     "240Month":"240Month",

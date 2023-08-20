@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import './range.css'
 function Login2() {
   const [t]=useTranslation("global")
 const [status,setStatus]= useState('Deny')
- const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:''})
+ const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:'',job:'',motherName:'',NID_creation_date:''})
 function handleinput(event){
   setvalue((prevValues) => ({
     ...prevValues,
@@ -91,7 +91,7 @@ axios({
  </div> 
 
  <div className="col-md-4">
-   <label htmlFor="Mobil Number" className="form-label">{t('Mobil Number')}</label>
+   <label htmlFor="Mobil Number" className="form-label">{t('Mobile Number')}</label>
    <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required/>
    <div className="invalid-feedback">
        {t('error4')}
@@ -135,13 +135,46 @@ axios({
       {t('error9')}
    </div></div>
    
-   <div className="col-md-3">
+   <div className="col-md-4">
    <label htmlFor="validationCustom05" className="form-label">{t('Zip')}</label>
    <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required/>
    <div className="invalid-feedback">
       {t('error10')}
    </div>
  </div>
+
+ 
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
+   <input name='job' type="text" className="form-control" id="validationCustom111" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error13')}
+   </div>
+ </div>
+
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
+   <input name='motherName' type="text" className="form-control" id="validationCustom112" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error14')}
+   </div>
+ </div>
+
+
+ <div className="col-md-4">
+   <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
+   <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113" onChange={handleinput}  required/>
+   <div className="invalid-feedback">
+      {t('error15')}
+   </div>
+ </div>
+
+
+
+
+ 
 
   
  <div className="col-md-3">
