@@ -2,17 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import './ocr.css'
 import './range.css'
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import axios from "axios"
 import { useTranslation } from 'react-i18next';
 import translate from "translate";
+import { transliterate as tr, slugify } from 'transliteration';
 import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import Languagecontext from "./Components/Store/languageProvider";
 
 
 function Ocr() {
 
+  const {language,setLanguage} = useContext(Languagecontext)
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [croppedImage, setCroppedImage] = useState(null);
   const [src, selectFile] = useState(null)
@@ -73,12 +76,25 @@ function Ocr() {
   }
   const [t] = useTranslation("global")
   useEffect(() => {
-    (() => {
-      'use strict'
+    //  transleiterate  test  
 
+
+    (async() => {
+      
+      try{
+        if (language=='en'){
+          console.log("the contextt language is ",language)
+        }
+        else {
+         console.log("is not english",language)       }
+        
+      }
+      catch(e){
+        console.log("Error: " + e.message)
+
+      }
 
       const forms = document.querySelectorAll('.needs-validation')
-
 
       Array.from(forms).forEach(form => {
         form.addEventListener('submit', event => {
@@ -91,17 +107,12 @@ function Ocr() {
         }, false)
       })
     })()
-  }, []);
+  }, [language]);
 
   const handleImageChange = async (event, setImageFunction) => {
     // translation test 
-    try {
-      const text = await translate("أمين بن شرادة", { from: 'ar', to: 'en' });
-      console.log(text);
-    }
-    catch (error) {
-      console.log("the error is ", error)
-    }
+    
+   
 
     const file = event.target.files[0];
     const formData = new FormData();
@@ -120,6 +131,7 @@ function Ocr() {
 
       try {
         const response = await axios.post('http://localhost:5000/flask_api/front_image_info', formData);
+        
         setValues(prevValues => ({
           ...prevValues,
           name: response.data.data.cr_name1,
@@ -129,32 +141,48 @@ function Ocr() {
           cin_number: response.data.data.cr_number,
 
         }));
-        const [t] = useTranslation("global")
+       
 
 
       } catch (error) {
         console.error(error);
       }
     }
-    else {
+
       try {
         const response = await axios.post('http://localhost:5000/flask_api/back_image_info', formData);
         console.log("the response is ", response)
-        setValues(prevValues => ({
-          ...prevValues,
-          motherName: response.data.data.mother_name,
-          job: response.data.data.work,
-          address: response.data.data.address,
-          NID_creation_date: response.data.data.creation_date,
+        //  translate all the items in the form
+        // await translate(  response.data.data.mother_name, { from: 'ar', to: 'en' });
+        const trans_mother_name= await tr(response.data.data.mother_name)
+        const trans_work=await translate(response.data.data.work, { from: 'ar', to: 'en' }); 
+        const trans_address=await translate( response.data.data.address, { from: 'ar', to: 'en' }); 
+        const trans_NID_creation_date=await translate(response.data.data.creation_date, { from: 'ar', to: 'en' });
+        console.log(" Mother name   ",trans_mother_name) 
 
-        }));
-      } catch (error) {
-        console.error(error);
+        if (language ==='ar'){
+          setValues(prevValues => ({
+            ...prevValues,
+            motherName:  response.data.data.mother_name,
+            job: response.data.data.work,
+            address: response.data.data.address,
+            NID_creation_date: response.data.data.creation_date,
+
+          }));}
+          else{
+            setValues(prevValues => ({
+              ...prevValues,
+              motherName:  trans_mother_name,
+              job: trans_work,
+              address: trans_address,
+              NID_creation_date: trans_NID_creation_date ,
+            }));
+
+        }}
+        catch(err){
+          console.log("the error is ",err); 
+        }
       }
-
-    }
-
-  }
 
   return (
 
