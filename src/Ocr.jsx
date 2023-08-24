@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import './ocr.css'
 import './range.css'
-import { useEffect, useState,useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from "axios"
 import { useTranslation } from 'react-i18next';
 import translate from "translate";
@@ -11,14 +11,29 @@ import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import Languagecontext from "./Components/Store/languageProvider";
+import Loader from "./Components/Loader/Loader"
+import LoanSimulator from "./Components/LoanSimulator/LoanSimulator";
 
 
-function Ocr() {
 
-  const {language,setLanguage} = useContext(Languagecontext)
+function Ocr( ) {
+  const [loading, setLoading] = useState(false);
+
+  const { language, setLanguage } = useContext(Languagecontext); 
+  const [amount,setAmount]=useState(0);
+  const [month,setMonth]=useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [croppedImage, setCroppedImage] = useState(null);
   const [src, selectFile] = useState(null)
+
+// Get Credit data  to extarct it from the LoanSimulator  
+const getCreditData =(amount,month)=>{
+  setAmount(amount); 
+  setMonth(month);
+} 
+
+
+
   const handelfile = (e) => {
     selectFile(URL.createObjectURL(e.target.files[0]))
 
@@ -30,6 +45,64 @@ function Ocr() {
   const [result, setResult] = useState(null)
   const [image1, setImage1] = useState("images/CIN1.png");
   const [image2, setImage2] = useState("images/CIN2.png");
+  const [values, setValues] = useState({ name: '', surname: '', email: '', phone_number: '', country: '', city: '', address: '', cin_number: '', birth_date: '', zipCode: '', gender: '', job: '', motherName: '', NID_creation_date: '' })
+
+  // handle the language change  
+  async function onLanguageChange(language) {
+
+    // arabic variables 
+    try {
+
+      if (language == 'ar') {
+        // English variables  
+        const ar_mother_name = await translate(values.motherName, { from: 'en', to: 'ar' });
+        const ar_job = await translate(values.job, { from: 'en', to: 'ar' });
+        const ar_address = await translate(values.address, { from: 'en', to: 'ar' });
+        const ar_NID_date = await translate(values.NID_creation_date, { from: 'en', to: 'ar' });
+        console.log(ar_mother_name)
+
+        setValues(prevValues => ({
+
+          ...prevValues,
+          motherName: ar_mother_name,
+          job: ar_job,
+          address: ar_address,
+          NID_creation_date: ar_NID_date
+        }));
+
+      }
+
+      if (language == 'en') {
+        // English variables  
+        const en_mother_name = await tr(values.motherName);
+        const en_job = await translate(values.job, { from: 'ar', to: 'en' });
+        const en_address = await translate(values.address, { from: 'ar', to: 'en' });
+        const en_NID_date = await translate(values.NID_creation_date, { from: 'ar', to: 'en' });
+
+        setValues(prevValues => ({
+
+          ...prevValues,
+          motherName: en_mother_name,
+          job: en_job,
+          address: en_address,
+          NID_creation_date: en_NID_date
+        }));
+
+      }
+    }
+    catch (err) {
+      console.log("catch it   ", err)
+    }
+  }
+//  Submit Handler 
+
+const submitHandler= async(event)=>{
+  event.preventDefault()
+  const  status= 'pending'
+  const result=  await axios.post('http://localhost:4000/creditRequest/new',{...values,status,amount,month} );
+  console.log("the result is a succes ", result); 
+}
+
   const getcroppe = async () => {
     if (src) {
       const image = new Image();
@@ -67,7 +140,7 @@ function Ocr() {
     }
   };
 
-  const [values, setValues] = useState({ name: '', surname: '', email: '', phone_number: '', country: '', city: '', address: '', cin_number: '', birth_date: '', zipCode: '', gender: '', job: '', motherName: '', NID_creation_date: '' })
+  //  handle input function  
   function handleinput(event) {
     setValues((prevValues) => ({
       ...prevValues,
@@ -75,24 +148,22 @@ function Ocr() {
     }));
   }
   const [t] = useTranslation("global")
+
+  // using another useEffect may be correct one  
   useEffect(() => {
-    //  transleiterate  test  
+
+    console.log("the language is", language)
+    onLanguageChange(language)
+
+    console.log("the amount is ",amount); 
+    console.log("the month is ",month);
 
 
-    (async() => {
-      
-      try{
-        if (language=='en'){
-          console.log("the contextt language is ",language)
-        }
-        else {
-         console.log("is not english",language)       }
-        
-      }
-      catch(e){
-        console.log("Error: " + e.message)
+  }, [language, setValues,month, amount])
 
-      }
+  useEffect(() => {
+
+    (async () => {
 
       const forms = document.querySelectorAll('.needs-validation')
 
@@ -106,13 +177,13 @@ function Ocr() {
           form.classList.add('was-validated')
         }, false)
       })
-    })()
+    })
   }, [language]);
 
+
+
+
   const handleImageChange = async (event, setImageFunction) => {
-    // translation test 
-    
-   
 
     const file = event.target.files[0];
     const formData = new FormData();
@@ -130,59 +201,86 @@ function Ocr() {
     if (event.target.id == "image-upload1") {
 
       try {
+        setLoading(true);
         const response = await axios.post('http://localhost:5000/flask_api/front_image_info', formData);
         
-        setValues(prevValues => ({
-          ...prevValues,
-          name: response.data.data.cr_name1,
-          surname: response.data.data.cr_surname,
-          birth_Date: response.data.cr_birthDate,
-          city: response.data.data.cr_state,
-          cin_number: response.data.data.cr_number,
+        setLoading(false)
+        // added code 
+        if (language === 'ar') {
+          setValues(prevValues => ({
+            ...prevValues,
+            name: response.data.data.cr_name1 + response.data.data.cr_name2,
+            surname: response.data.data.cr_surname,
+            birth_Date: response.data.cr_birthDate,
+            city: response.data.data.cr_state,
+            cin_number: response.data.data.cr_number,
 
-        }));
-       
+          }));
+        }
 
+        else {
+          const en_name = await tr(response.data.data.cr_name1+ response.data.data.cr_name2)
+          const en_surname = await translate(response.data.data.cr_surname, { from: 'ar', to: 'en' },);
+          const en_birth_Date = await translate(response.data.cr_birthDate, { from: 'ar', to: 'en' });
+          const en_city = await translate(response.data.data.cr_state, { from: 'ar', to: 'en' });
+          const en_cin_number = await translate(response.data.data.cr_number, { from: 'ar', to: 'en' });
+          setValues(prevValues => ({
+            ...prevValues,
+            name: en_name,
+            surname:en_surname,
+            birth_Date: en_birth_Date,
+            city: en_city ,
+            cin_number: en_cin_number,
+          }));
 
-      } catch (error) {
+        }
+      }
+      catch (error) {
         console.error(error);
       }
     }
 
-      try {
-        const response = await axios.post('http://localhost:5000/flask_api/back_image_info', formData);
-        console.log("the response is ", response)
-        //  translate all the items in the form
-        // await translate(  response.data.data.mother_name, { from: 'ar', to: 'en' });
-        const trans_mother_name= await tr(response.data.data.mother_name)
-        const trans_work=await translate(response.data.data.work, { from: 'ar', to: 'en' }); 
-        const trans_address=await translate( response.data.data.address, { from: 'ar', to: 'en' }); 
-        const trans_NID_creation_date=await translate(response.data.data.creation_date, { from: 'ar', to: 'en' });
-        console.log(" Mother name   ",trans_mother_name) 
+    try {
+      setLoading(true)
+      const startTime = performance.now();
+      const response = await axios.post('http://localhost:5000/flask_api/back_image_info', formData);
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+      
+      console.log("the response is ", response)
+      //  translate all the items in the form
+      // await translate(  response.data.data.mother_name, { from: 'ar', to: 'en' });
 
-        if (language ==='ar'){
-          setValues(prevValues => ({
-            ...prevValues,
-            motherName:  response.data.data.mother_name,
-            job: response.data.data.work,
-            address: response.data.data.address,
-            NID_creation_date: response.data.data.creation_date,
+      setLoading(false);
+      if (language === 'ar') {
+        setValues(prevValues => ({
+          ...prevValues,
+          motherName: response.data.data.mother_name,
+          job: response.data.data.work,
+          address: response.data.data.address,
+          NID_creation_date: response.data.data.mother_name,
 
-          }));}
-          else{
-            setValues(prevValues => ({
-              ...prevValues,
-              motherName:  trans_mother_name,
-              job: trans_work,
-              address: trans_address,
-              NID_creation_date: trans_NID_creation_date ,
-            }));
-
-        }}
-        catch(err){
-          console.log("the error is ",err); 
-        }
+        }));
       }
+      else {
+        const trans_mother_name = await tr(response.data.data.mother_name)
+        const trans_work = await translate(response.data.data.work, { from: 'ar', to: 'en' });
+        const trans_address = await translate(response.data.data.address, { from: 'ar', to: 'en' });
+        const trans_NID_creation_date = await translate(response.data.data.creation_date, { from: 'ar', to: 'en' });
+        setValues(prevValues => ({
+          ...prevValues,
+          motherName: trans_mother_name,
+          job: trans_work,
+          address: trans_address,
+          NID_creation_date: trans_NID_creation_date,
+        }));
+
+      }
+    }
+    catch (err) {
+      console.log("the error is ", err);
+    }
+  }
 
   return (
 
@@ -196,46 +294,24 @@ function Ocr() {
           <div className="image-with-button">
             <label htmlFor="image-upload1">
               {/* croppedImage || */}
-              <img src={image1} alt="Image 1" 
+              <img src={image1} alt="Image 1"
               />
               <span className="blue-button">{t('Download')}</span>
-              <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Crop</button>
+              {/* <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Crop</button> */}
               {/*  model */}
-              <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                contentLabel="Recadrage d'image"
-              >
-                {/* Contenu de la fenêtre modale */}
-                <div className='row'>
-                  <div className='col-6'>
-                    <input type='file' accept='image/*' 
-                     id="image-upload1"
-                      onChange={(e) => handleImageChange(e, setImage1)}
-                      style={{ display: "none" }} />
-
-                  </div>
-                  {src && (
-                    <div className='clo-6' >
-                      <ReactCrop crop={crop} onImageLoaded={setImage1} onChange={setCrop}>
-                        <img src={src} alt='Selected for cropping' style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }} />
-                      </ReactCrop>
-                      <button className='btn btn-danger' onClick={async () => {
-                        console.log("the value of the image has changed ", result)
-                        await getcroppe();
-                        setModalIsOpen(false);
-                        updateImage1(result); // Mettre à jour l'image1 avec le résultat du recadrage
-
-
-
-                      }}>Crop image</button>
-                    </div>
-                  )}
-                </div>
-
-              </Modal>
+              {/*  ?????????????????? this is the place of Yasmine croping code      ??????????????? */}
+              {/*  */}
               {/* finmodel */}
             </label>
+            {/* Added cod by Ahmed   */}
+            <input
+              type="file"
+              id="image-upload1"
+              name="file"
+              accept="image/*"
+              onChange={(e) => handleImageChange(e, setImage1)}
+              style={{ display: "none" }}
+            />
 
 
           </div>
@@ -257,42 +333,46 @@ function Ocr() {
           </div>
         </div>
       </div>
-
-      <form className="row g-3 needs-validation  " noValidate>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom01" className="form-label">{t("First name")}</label>
-          <input name='name' type="text" className="form-control" id="validationCustom01" value={values.name} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error1')}
-          </div>
-
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom02" className="form-label">{t("Lastname")}</label>
-          <input name='surname' type="text" className="form-control" id="validationCustom02" value={values.surname} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error2')}
-          </div>
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustomUsername" className="form-label">{t("Email")}</label>
-          <div className="input-group has-validation">
-            <span className="input-group-text" id="inputGroupPrepend">@</span>
-            <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" value={values.email} onChange={handleinput} required />
+      {loading ?
+        <Fragment>
+          <Loader />
+        </Fragment>
+        :
+        <form className="row g-3 needs-validation  " noValidate>
+          <div className="col-md-4">
+            <label htmlFor="validationCustom01" className="form-label">{t("First name")}</label>
+            <input name='name' type="text" className="form-control" id="validationCustom01" value={values.name} onChange={handleinput} required />
             <div className="invalid-feedback">
-              {t('error3')}
+              {t('error1')}
+            </div>
+
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="validationCustom02" className="form-label">{t("Lastname")}</label>
+            <input name='surname' type="text" className="form-control" id="validationCustom02" value={values.surname} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error2')}
             </div>
           </div>
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="Mobile Number" className="form-label">{t("Mobile Number")}</label>
-          <input name='phone_number' type="text" className="form-control" id="Mobile Number" value={values.phone_number} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error4')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustomUsername" className="form-label">{t("Email")}</label>
+            <div className="input-group has-validation">
+              <span className="input-group-text" id="inputGroupPrepend">@</span>
+              <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" value={values.email} onChange={handleinput} required />
+              <div className="invalid-feedback">
+                {t('error3')}
+              </div>
+            </div>
           </div>
-        </div>
-        {/* <div className="col-md-4">
+
+          <div className="col-md-4">
+            <label htmlFor="Mobile Number" className="form-label">{t("Mobile Number")}</label>
+            <input name='phone_number' type="text" className="form-control" id="Mobile Number" value={values.phone_number} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error4')}
+            </div>
+          </div>
+          {/* <div className="col-md-4">
           <label htmlFor="country" className="form-label">{t("Country")}</label>
           <input name='country' type="text" className="form-control" id="Country" value={values.country} onChange={handleinput} required />
           <div className="invalid-feedback">
@@ -300,72 +380,72 @@ function Ocr() {
           </div></div> */}
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom03" className="form-label">{t("City")}</label>
-          <input name='city' type="text" className="form-control" id="validationCustom03" value={values.city} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error6')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustom03" className="form-label">{t("City")}</label>
+            <input name='city' type="text" className="form-control" id="validationCustom03" value={values.city} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error6')}
+            </div>
           </div>
-        </div>
 
-        <div className="col-md-4">
-          <label htmlFor="Address" className="form-label">{t("Address")}</label>
-          <input name='address' type="text" className="form-control" id="Address" value={values.address} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error7')}
-          </div></div>
+          <div className="col-md-4">
+            <label htmlFor="Address" className="form-label">{t("Address")}</label>
+            <input name='address' type="text" className="form-control" id="Address" value={values.address} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error7')}
+            </div></div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="NID" className="form-label">{t("NID")}</label>
-          <input name='cin_number' type="text" className="form-control" id="NID" value={values.cin_number} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error8')}
-          </div></div>
+          <div className="col-md-4">
+            <label htmlFor="NID" className="form-label">{t("NID")}</label>
+            <input name='cin_number' type="text" className="form-control" id="NID" value={values.cin_number} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error8')}
+            </div></div>
 
-        <div className="col-md-4">
-          <label htmlFor="birth_date" className="form-label">{t('date')}</label>
-          <input name='birth_date' type="text" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error9')}
-          </div></div>
+          <div className="col-md-4">
+            <label htmlFor="birth_date" className="form-label">{t('date')}</label>
+            <input name='birth_date' type="text" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error9')}
+            </div></div>
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
-          <input name='zipCode' type="text" className="form-control" id="validationCustom05" value={values.zipCode} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error10')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
+            <input name='zipCode' type="text" className="form-control" id="validationCustom05" value={values.zipCode} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error10')}
+            </div>
           </div>
-        </div>
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
-          <input name='job' type="text" className="form-control" id="validationCustom111" value={values.job} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error13')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
+            <input name='job' type="text" className="form-control" id="validationCustom111" value={values.job} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error13')}
+            </div>
           </div>
-        </div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
-          <input name='motherName' type="text" className="form-control" id="validationCustom112" value={values.motherName} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error14')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
+            <input name='motherName' type="text" className="form-control" id="validationCustom112" value={values.motherName} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error14')}
+            </div>
           </div>
-        </div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
-          <input name='NID_creation_date' type="text" className="form-control" id="validationCustom113" value={values.NID_creation_date} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error15')}
+          <div className="col-md-4">
+            <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
+            <input name='NID_creation_date' type="text" className="form-control" id="validationCustom113" value={values.NID_creation_date} onChange={handleinput} required />
+            <div className="invalid-feedback">
+              {t('error15')}
+            </div>
           </div>
-        </div>
 
 
-        {/* <div className="col-md-3">
+          {/* <div className="col-md-3">
           <label htmlFor="validationCustom04" className="form-label">
           </label>
           <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput} required>
@@ -378,42 +458,32 @@ function Ocr() {
           </div>
         </div> */}
 
-        <div className="col-12">
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required />
-            <label className="form-check-label" htmlFor="invalidCheck">
-              {t('conditions')}
-            </label>
-            <div className="invalid-feedback">
-              {t('error12')}
+          <div className="col-12">
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required />
+              <label className="form-check-label" htmlFor="invalidCheck">
+                {t('conditions')}
+              </label>
+              <div className="invalid-feedback">
+                {t('error12')}
+              </div>
             </div>
           </div>
-        </div>
+          <br />
+          <br />
+          <br />
 
+          {/*  Loan Simulator  */}
+          {/**/}
+          <LoanSimulator  getCreditData={getCreditData} /> 
+          {/* Submit button */}
+          <div className="row text-center mt-5 ">
+                    <div className="col-12">
+                        <button className="btn btn-outline-primary" onClick={submitHandler}>{t('Send Request')} </button>
+                    </div>
+                </div>
 
-        <label className="form-label" htmlFor="customRange1">{t('Loan term')}</label>
-        <div className="position-relative">
-          <div className="range">
-            <div className="position-absolute top-0 start-0">{t('1 m')}</div>
-            <div className="position-absolute top-0 end-0">{t('240 m')}</div>
-            <div className="position-absolute top-50 start-50"></div><input name="month" type="range" className="form-range" min="1" max="240" id="customRange1" value={values.month} onChange={handleinput} step='1' />
-            <h1>{values.month}{t('Month')}</h1></div></div>
-
-        <label className="form-label" htmlFor="customRange2">{t('Loan Amount')}</label>
-        <div className="position-relative">
-          <div className="range">
-            <div className="position-absolute top-0 start-0">5000</div>
-            <div className="position-absolute top-0 end-0">100000</div>
-            <div className="position-absolute top-50 start-50"></div><input name="amount" type="range" className="form-range" min="5000" max="100000" id="customRange2" value={values.amount} onChange={handleinput} step='100' />
-            <h1>{values.amount}{t('TND')}</h1></div></div>
-
-
-
-        <div className="col-12">
-          <button className="btn btn-outline-primary" type="submit">finish </button>
-        </div>
-
-      </form>
+        </form>}
     </div>
   )
 }

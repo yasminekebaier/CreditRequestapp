@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Navbar.css'; // Importez le fichier CSS
@@ -14,8 +13,9 @@ const Navbarr = () => {
   
  
   const  languageHandler=(lang)=> {
+
     setLanguage(lang);
-    console.log("language handler is ",language)
+   
    
   }
   

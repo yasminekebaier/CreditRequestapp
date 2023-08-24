@@ -6,10 +6,10 @@ import Home from "./Components/LandingPage/Home";
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Clientdetails from "./Components/Clientdetails";
 import LanguageContext from './Components/Store/languageProvider';
-
+import CreditRequestManual from "./creditRequestManual"
 
 import Ocr from "./Ocr";
- import Login2 from "./Login2"
+
 function App() {
   const [language, setLanguage] = useState("en");
 
@@ -20,20 +20,22 @@ function App() {
       <div className="App">
       <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
         <Navbarr />
-        </LanguageContext.Provider>
+      </LanguageContext.Provider>
         <div className="content">
           <Switch>
           <Route exact path="/">
                <Home/>
             </Route>
-    <Route exact path="/login2">
-               <Login2/>
+    <Route exact path="/manual">
+               <CreditRequestManual/>
             </Route>
-            <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+           
             <Route exact path="/ocr">
+            <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
                <Ocr/>
-            </Route>
             </LanguageContext.Provider>
+            </Route>
+           
             <Route exact path="/login">
               <Login />
             </Route>
