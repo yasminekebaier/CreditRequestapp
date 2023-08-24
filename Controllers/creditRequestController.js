@@ -42,7 +42,7 @@ exports.getRequestById = async (req,res,next) => {
 //update request by id => /creditRequest/update/:id 
 
 
-const sendStatusEmail = async (email, status) => {
+const sendStatusEmail = async (email, status ,comment) => {
     try {
         const transporter = mailTransport();
         console.log('Sending email to:', email);
@@ -50,7 +50,7 @@ const sendStatusEmail = async (email, status) => {
         from: 'kebaieryasmine0@gmail.com',
         to: email,
         subject: 'Credit Request Status',
-        html: `<h3>Hello,</h3><p>Your credit request status is: ${status}</p>`,
+        html: `<h3>Hello,</h3><p>Your credit request status is: ${status}</p><p>Cause: ${comment}</p>`,
       };
       console.log('Mail options:', mailOptions);
       const info = await transporter.sendMail(mailOptions);
@@ -63,10 +63,11 @@ const sendStatusEmail = async (email, status) => {
 exports.updateRequestById = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status, email } = req.body; // Assuming you send the new status and client email in the request body
+      const { status, email, comment } = req.body; // Assuming you send the new status and client email in the request body
       console.log('Updating request with ID:', id);
       console.log('New status:', status);
       console.log('Client email:', email);
+      console.log('Comment:', comment);
   
       const updatedCreditRequest = await CreditRequest.findByIdAndUpdate(
         id,
@@ -83,7 +84,7 @@ exports.updateRequestById = async (req, res, next) => {
       }
   
       // Send email to the client
-      await sendStatusEmail(email, status);
+      await sendStatusEmail(email, status,comment);
   
       res.status(200).json({
         success: true,
