@@ -286,7 +286,7 @@ const submitHandler= async(event)=>{
 
     <div className="w-auto p-3 ">
       <div className="flex space-x-10 ...">
-        <Link to='/login2' className="ml-4">{t('Manual')} </Link>
+        <Link to='/manual' className="ml-4">{t('Manual')} </Link>
         <Link to='/ocr'>    {t('ocr')}</Link>
       </div>
       <div className="images-container row">
