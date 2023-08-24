@@ -1,9 +1,10 @@
- import { useEffect, useState } from 'react';
+ import React,{ useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
 import './range.css'
-function Login2() {
+import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
+function CreditRequestManual() {
   const [t]=useTranslation("global")
 const [status,setStatus]= useState('Deny')
  const[values,setvalue]=useState({name:'',surname :'',email:'',phone_number:'',country:'',city:'',address:'',cin_number:'',birth_date:'',zipCode:'',gender:'',job:'',motherName:'',NID_creation_date:''})
@@ -172,11 +173,6 @@ axios({
  </div>
 
 
-
-
- 
-
-  
  <div className="col-md-3">
    <label htmlFor="validationCustom04" className="form-label">
  </label>
@@ -204,37 +200,11 @@ axios({
  
  
 
-
-
- <label className="form-label" htmlFor="customRange1">{t('Loan term')}</label>
-<div className="position-relative">
-<div className="range">
-  <div className="position-absolute top-0 start-0">{t('1Month')}</div>
-  <div className="position-absolute top-0 end-0">{t('240Month')}</div>
-  <div className="position-absolute top-50 start-50"></div><input name="month" type="range" className="form-range" min="1" max="240" id="customRange1" value={values.month}   onChange={handleinput} step='1'/>
-  <h1>{values.month}{t('Month')}</h1></div></div>
- 
- 
-
-
-
-  <label className="form-label" htmlFor="customRange2">{t('Loan Amount')}</label>
-<div className="position-relative">
-<div className="range">
-  <div className="position-absolute top-0 start-0">5000</div>
-  <div className="position-absolute top-0 end-0">100000</div>
-  <div className="position-absolute top-50 start-50"></div><input name="amount" type="range" className="form-range" min="5000" max="100000"   id="customRange2" value={values.amount} onChange={handleinput} step='100'/>
-  <h1>{values.amount}{t('TND')}</h1></div></div>
- 
-
- 
- <div className="col-12">
-   <button className="btn btn-outline-primary" type="submit">finish </button>
- </div>
+<LoanSimulator />
   
 </form>
       </div> 
   )
 }
 
-export default Login2
+export default CreditRequestManual; 
