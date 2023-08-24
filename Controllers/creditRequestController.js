@@ -1,6 +1,8 @@
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
 const ErrorHandler = require('../utils/errorHandler');
 const CreditRequest = require('../models/creditRequest');
+const nodemailer = require("nodemailer");
+const { mailTransport } = require('../utils/mail')
 
 
 // Register credit Request => /creditRequest/new
@@ -37,21 +39,62 @@ exports.getRequestById = async (req,res,next) => {
     })
 }
 //update request by id => /creditRequest/update/:id 
-exports.updateRequestById = async (req,res,next) => {
-    // find Request 
-    let creditRequest = await CreditRequest.findById(req.params.id)
-    if (!creditRequest) {
-        return next(new ErrorHandler('creditRequest not Found', 404));
-    }
-    //update request 
-    creditRequest= await CreditRequest.findByIdAndUpdate(req.params.id, req.body,{
-        new:true, 
-        runValidators:true,
-        useFindAndModify:true,
-    })
+//update request by id => /creditRequest/update/:id 
 
-    res.status(200).json({
-        success:true, 
-         creditRequest:creditRequest
-    })
-}
+
+const sendStatusEmail = async (email, status) => {
+    try {
+        const transporter = mailTransport();
+        console.log('Sending email to:', email);
+      const mailOptions = {
+        from: 'kebaieryasmine0@gmail.com',
+        to: email,
+        subject: 'Credit Request Status',
+        html: `<h3>Hello,</h3><p>Your credit request status is: ${status}</p>`,
+      };
+      console.log('Mail options:', mailOptions);
+      const info = await transporter.sendMail(mailOptions);
+      mailTransport().sendMail(mailOptions,info);
+      console.log('Email sent:', info.response);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  }
+exports.updateRequestById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status, email } = req.body; // Assuming you send the new status and client email in the request body
+      console.log('Updating request with ID:', id);
+      console.log('New status:', status);
+      console.log('Client email:', email);
+  
+      const updatedCreditRequest = await CreditRequest.findByIdAndUpdate(
+        id,
+        { status },
+        {
+          new: true,
+          runValidators: true,
+          useFindAndModify: true,
+        }
+      );
+  
+      if (!updatedCreditRequest) {
+        return next(new ErrorHandler('creditRequest not Found', 404));
+      }
+  
+      // Send email to the client
+      await sendStatusEmail(email, status);
+  
+      res.status(200).json({
+        success: true,
+        message: 'Status updated and email sent.',
+        creditRequest: updatedCreditRequest,
+      });
+    } catch (error) {
+      console.error('Error updating status:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error updating status and sending email.',
+      });
+    }
+  };

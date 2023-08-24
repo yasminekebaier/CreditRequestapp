@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 const http = require('http');   
 const userRoutes = require('./Routes/userRoutes');
 const creditRequest = require('./Routes/creditRequestRoutes'); 
+const { checkUser } = require('./middlewares/auth');
 
 
 // cors config  
@@ -50,5 +51,8 @@ app.use(bodyParser.urlencoded({
 app.use(fileUpload({
     useTempFiles: true
 }));
+//jwt 
+app.get('*',checkUser);
+//routes
 app.use('',userRoutes); 
 app.use('',creditRequest ); 

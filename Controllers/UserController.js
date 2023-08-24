@@ -24,6 +24,7 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
       userName
   }).select('+password');
   
+  
   if (!user) {
       return next(new ErrorHandler('Invalid Email or Password', 401));
   }
@@ -41,3 +42,12 @@ exports.login = catchAsyncErrors(async (req, res, next) => {
  
 
   });
+  //logout:
+  exports.logout = (req, res) => {
+    module.exports.logout = (req, res) => {
+        res.cookie('jwt', '', { maxAge: 1 });
+        res.redirect('/');
+      }
+
+    res.status(200).json({ message: 'Logged out successfully' });
+};
