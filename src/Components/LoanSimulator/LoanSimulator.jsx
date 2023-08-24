@@ -86,17 +86,17 @@ const LoanSimulator = (props) => {
                     <div className="col-md-6  col-xl-6 col-sm-12 text-center ">
                         <div className="card">
                             <div className="card-body">
-                                <h3 className="card-text">Interest rate per year</h3>
+                                <h3 className="card-text">{t('Interest')}</h3>
                                 <div className="border border-primary p-1 mb-3 text-center">
                                   <h1 className="fs-2 mt-2">{interest} %</h1> 
                                 </div>
-                                <h3 className="card-text">Monthly Payement</h3>
+                                <h3 className="card-text">{t('Monthly Payement')}</h3>
                                 <div className="border border p-1 mb-3">
-                                  <h1 className="fs-1 mt-2  text-primary">{monthPayement}   TND</h1> 
+                                  <h1 className="fs-1 mt-2  text-primary">{monthPayement}   {t('TND')}</h1> 
                                 </div>
-                                <h3 className="card-text">Total Payement</h3>
+                                <h3 className="card-text">{t('Total Payement')}</h3>
                                 <div className="border border-primary p-1">
-                                  <h1 className="fs-2 mt-2">{totalPayement}  TND</h1> 
+                                  <h1 className="fs-2 mt-2">{totalPayement}  {t('TND')}</h1> 
                                 </div>
                               
                             </div>

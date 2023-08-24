@@ -6,14 +6,15 @@
     "Check me out":"Check me out",
     "ENGLISH":"ENGLISH",
     "ARABE":"ARABE",
-    "Manuel":"Manuel"
+    "Manual":"Manual"
     ,"ocr":"OCR"
 ,"First name":"First name",
 "error1":"Please choose a name.",
 "Lastname":"Lastname",
 "error2":"Please choose a lastname."
     ,"Email":"Email",
-    "error3":"Please provide a Email."
+    "error3":"Please provide a Email.",
+    "error33":"email must be a valid email"
     ,"Mobile Number":"Mobil Number"
     ,"error4":"Please provide a  Mobil Number.",
     "Country":"Country",
@@ -41,7 +42,7 @@
      "NIDdate":"NID creation date",
     "error15":"Please provide a valid NID creation date.",
 
-    "Loan Simulator ":"Laon Simulator ",
+    "Loan term":"Loan term",
     "1Month":"1Month",
     "240Month":"240Month",
     "Month":"Month",
@@ -62,7 +63,17 @@
     "H":"About Us",
     "i":"Contact Us",
     "j":"Follow Us",
-    "k":"2023 Your creditWise App. All rights reserved."
-
+    "k":"2023 Your creditWise App. All rights reserved.",
+    "min":"name must be at least 2 characters",
+    "max":"name must be at most 10 characters",
+    "letter":" must be letters only ",
+    "digits":"must be only digits",
+    "max8":"phone_number must be at most 8 numbers",
+    "max4":"phone_number must be at most 4 numbers",
+    "dd":"Date of birth must be of type date",
+    "dd1":"NID creation date must be of type date",
+    "Interest":"Interest rate per year",
+    "Monthly Payement":"Monthly Payement",
+    "Total Payement":"Total Payement"
     
     }

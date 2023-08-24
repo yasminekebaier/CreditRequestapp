@@ -4,6 +4,9 @@ import axios from "axios";
 import { useTranslation } from 'react-i18next';
 import './range.css'
 import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
+import * as yup from "yup"
+import {yupResolver} from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form';
 const CreditRequestManual = () => {
 
   const [amount,setAmount]=useState(0);
@@ -22,6 +25,25 @@ const CreditRequestManual = () => {
       [event.target.name]: event.target.value,
     }));
   }
+
+
+const userSchema= yup.object().shape({
+  name:yup.string().required(t("error1")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")) ,
+  email:yup.string().email(t("error33")).required(t("error3")),
+  surname:yup.string().required(t("error2")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")),
+  phone_number:yup.string().required(t("error4")).matches(/^[0-9]+$/, t("digits")).max(8,t("max8")) ,
+  city:yup.string().required(t("error6")),
+  address:yup.string().required(t("error7")),
+  cin_number:yup.string().required(t("error8")).matches(/^[0-9]+$/,t("digits")).max(8,t("max8"))  ,
+  birth_date:yup.string() .required(t("error9")),
+  zipCode:yup.string().required(t("error10")).matches(/^[0-9]+$/,t("digits")).max(4,t("max4")) ,
+  job:yup.string().required(t("error13")),
+  motherName:yup.string().required(t("error14")).matches(/^[ aA-zZ ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")),
+  NID_creation_date:yup .string() .required(t("error15"))})
+  const {register,handleSubmit, formState:{errors}}=useForm({
+    resolver : yupResolver(userSchema),
+  }) ;
+
   useEffect(() => {
     (() => {
       'use strict'
@@ -34,7 +56,7 @@ const CreditRequestManual = () => {
         form.addEventListener('submit', event => {
           if (!form.checkValidity()) {
             event.preventDefault()
-            event.stopPropagation()
+            
           }
 
           form.classList.add('was-validated')
@@ -42,9 +64,10 @@ const CreditRequestManual = () => {
       })
     })()
   }, []);
-
-  function handelsabmit(event) {
-    setStatus("Pending");
+ 
+  // Submit  handler 
+const submitHandler= async(event)=>{
+  setStatus("Pending");
     console.log('Before form submission');
 
     event.preventDefault()
@@ -61,10 +84,7 @@ const CreditRequestManual = () => {
     }).catch(error => {
       console.error("Registration error:", error);
     });
-  }
-  // Submit  handler 
-const submitHandler= async(event)=>{
-  event.preventDefault()
+   
   const  status= 'pending'
   const result=  await axios.post('http://localhost:4000/creditRequest/new',{...values,status,amount,month} );
   console.log("the result is a succes ", result); 
@@ -74,147 +94,106 @@ const submitHandler= async(event)=>{
 
     <div className="w-auto p-3 ">
       <div className="flex space-x-4 ...">
-        <Link to='/login2'>{t('Manuel')}</Link>
+        <Link to='/manual' className="ml-4">{t('Manual')}</Link>
         <Link to='/ocr'>  {t('ocr')}</Link>
       </div>
 
-      <form className="row g-3 needs-validation  " onSubmit={handelsabmit} noValidate>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom01" className="form-label">{t('First name')}</label>
-          <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error1')}
-          </div>
+      <form className="row g-3 needs-validation  "   onSubmit={handleSubmit(submitHandler)}  noValidate>
+ <div className="col-md-4">
+   <label htmlFor="validationCustom01" className="form-label">{t('First name')}</label>
+   <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required {...register("name")}/>
+   <p>{errors.name?.message}</p>
+   
+ </div>
+ <div className="col-md-4">
+   <label htmlFor="validationCustom02" className="form-label">{t('Lastname')}</label>
+   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required {...register("surname")}/>
+   <p>{errors.surname?.message}</p>
+ </div>
+ <div className="col-md-4">
+   <label htmlFor="validationCustomUsername" className="form-label">{t('Email')}</label>
+   <div className="input-group has-validation">
+     <span className="input-group-text" id="inputGroupPrepend">@</span>
+     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  required  {...register("email")}/>
+   </div>
+   <p>{errors.email?.message}</p>
+ </div> 
 
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom02" className="form-label">{t('Lastname')}</label>
-          <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error2')}
-          </div>
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustomUsername" className="form-label">{t('Email')}</label>
-          <div className="input-group has-validation">
-            <span className="input-group-text" id="inputGroupPrepend">@</span>
-            <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput} required />
-            <div className="invalid-feedback">
-              {t('error3')}
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="Mobil Number" className="form-label">{t('Mobile Number')}</label>
-          <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error4')}
-          </div>
-        </div>
-        {/* <div className="col-md-4">
-          <label htmlFor="country" className="form-label">{t('Country')}</label>
-          <input name='country' type="text" className="form-control" id="Country" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error5')}
-          </div></div> */}
+ <div className="col-md-4">
+   <label htmlFor="Mobil Number" className="form-label">{t('Mobile Number')}</label>
+   <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required   {...register("phone_number")}/>
+   <p>{errors.phone_number?.message}</p>
+ </div>
+  
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom03" className="form-label">{t('City')}</label>
-          <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error6')}
-          </div>
-        </div>
+   <div className="col-md-4">
+   <label htmlFor="validationCustom03" className="form-label">{t('City')}</label>
+   <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  required   {...register("city")}/>
+   <p>{errors. city?.message}</p>
+ </div>
 
-        <div className="col-md-4">
-          <label htmlFor="Address" className="form-label">{t('Address')}</label>
-          <input name='address' type="text" className="form-control" id="Address" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error7')}
-          </div></div>
+ <div className="col-md-4">
+   <label htmlFor="Address" className="form-label">{t('Address')}</label>
+   <input name='address' type="text" className="form-control" id="Address" onChange={handleinput}  required {...register("address")}/>
+   <p>{errors.address?.message}</p>
+    </div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="NID" className="form-label"> {t('NID')}</label>
-          <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error8')}
-          </div></div>
+   <div className="col-md-4">
+   <label htmlFor="NID" className="form-label"> {t('NID')}</label>
+   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required {...register("cin_number")}/>
+   <p>{errors.cin_number?.message}</p></div>
 
-        <div className="col-md-4">
-          <label htmlFor="birth_date" className="form-label"> {t('date')}</label>
-          <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error9')}
-          </div></div>
+   <div className="col-md-4">
+   <label htmlFor="birth_date" className="form-label"> {t('date')}</label>
+   <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required {...register("birth_date")}/>
+   <p>{errors.birth_date?.message}</p></div>
+   
+   <div className="col-md-4">
+   <label htmlFor="validationCustom05" className="form-label">{t('Zip')}</label>
+   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required {...register("zipCode")}/>
+   <p>{errors.zipCode?.message}</p>
+ </div>
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom05" className="form-label">{t('Zip')}</label>
-          <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error10')}
-          </div>
-        </div>
+ 
 
-
-
-        <div className="col-md-4">
-          <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
-          <input name='job' type="text" className="form-control" id="validationCustom111" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error13')}
-          </div>
-        </div>
+ <div className="col-md-4">
+   <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
+   <input name='job' type="text" className="form-control" id="validationCustom111" onChange={handleinput}  required {...register("job")}/>
+   <p>{errors.job?.message}</p>
+ </div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
-          <input name='motherName' type="text" className="form-control" id="validationCustom112" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error14')}
-          </div>
-        </div>
+ <div className="col-md-4">
+   <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
+   <input name='motherName' type="text" className="form-control" id="validationCustom112" onChange={handleinput}  required {...register("motherName")}/>
+   <p>{errors.motherName?.message}</p>
+ </div>
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
-          <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113" onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error15')}
-          </div>
-        </div>
+ <div className="col-md-4">
+   <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
+   <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113" onChange={handleinput}  required {...register("NID_creation_date")}/>
+   <p>{errors.NID_creation_date?.message}</p>
+ </div>
+ 
 
-
-        {/* <div className="col-md-3">
-          <label htmlFor="validationCustom04" className="form-label">
-          </label>
-          <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput} required>
-            <option selected disabled value="">{t('Gender')}</option>
-            <option value='m'>{t('male')}</option>
-            <option value='f' >{t('female')}</option>
-          </select>
-          <div className="invalid-feedback">
-            {t('error11')}
-          </div>
-        </div> */}
-
-        <div className="col-12">
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required />
-            <label className="form-check-label" htmlFor="invalidCheck">
-              {t('conditions')}
-            </label>
-            <div className="invalid-feedback">
-              {t('error12')}
-            </div>
-          </div>
-        </div>
+ <div className="col-12">
+   <div className="form-check">
+     <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
+     <label className="form-check-label" htmlFor="invalidCheck">
+      {t('conditions')}
+     </label>
+     <div className="invalid-feedback">
+        {t('error12')}
+     </div>
+   </div>
+ </div>
         <LoanSimulator  getCreditData={getCreditData} /> 
         <div className="row text-center mt-5 ">
                     <div className="col-12">
-                        <button className="btn btn-outline-primary" onClick={submitHandler}>{t('Send Request')} </button>
+                        <button type="submit" className="btn btn-outline-primary"   > {t('Send Request')} </button>
                     </div>
                 </div>
 
