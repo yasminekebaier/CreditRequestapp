@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Navbar.css'; // Importez le fichier CSS
 import { Link } from "react-router-dom";
@@ -15,8 +15,7 @@ const Navbarr = () => {
   const  languageHandler=(lang)=> {
 
     setLanguage(lang);
-   
-   
+
   }
   
   const handelchange = (lang) => {
@@ -27,14 +26,19 @@ const Navbarr = () => {
 
   };
   return (
+    <Fragment>
+
+   
+    
       <nav className="navbar">
-        <div className="logo-container">
+      <div className="container"> 
+          <div className="logo-container">
           <Link to='/'>  <img className="logo" src="./images/logo.png" alt="Logo de l'application" /></Link>
           <h1 className="nav-title1">creditWise</h1>
         </div>
 
         <div className="nav-links">
-          <select value={language} onChange={(e) => {
+          <select value={language} style={{"borderRadius":"10px"}} onChange={(e) => {
             handelchange(e.target.value),
             languageHandler(e.target.value)
           }}
@@ -45,11 +49,14 @@ const Navbarr = () => {
 
           </select>
 
-          <Link className="nav-title" to="/login">{t("login")} </Link>
+          <Link className="nav-title" to="/login"><button className="btn  btn text-white fs-6" style ={{"backgroundColor":"#9c30a4" ,  "borderRadius":"10px"}}>{t("login")}  </button></Link>
 
         </div>
+        </div>  
       </nav>
-  
+    
+      </Fragment>
+ 
   );
 };
 

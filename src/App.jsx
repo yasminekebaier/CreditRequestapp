@@ -1,4 +1,4 @@
- import React,{useState} from 'react'
+import React,{useState} from 'react'
 import Login from "./Login";
 import Navbarr from "./Components/Navbar/Navbarr";
 import Home from "./Components/LandingPage/Home";
@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Clientdetails from "./Components/Clientdetails";
 import LanguageContext from './Components/Store/languageProvider';
 import CreditRequestManual from "./creditRequestManual"
+import RequestRedirect from './Components/Redirect/RequestRedirect';
 
 import Ocr from "./Ocr";
 
@@ -45,6 +46,10 @@ function App() {
             <Route path="/client/:id">
               <Clientdetails />
             </Route>
+            <Route exact path="/request-home">
+              <RequestRedirect />
+            </Route>
+           
           </Switch>
           
         </div>
