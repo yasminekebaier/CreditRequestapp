@@ -1,16 +1,21 @@
+import { useState } from "react"
 import About from "../About"
 import Footer from "../Footer"
 import Header from "../Header"
 import Navbarr from "../Navbar/Navbarr"
+import LanguageContext from "../Store/languageProvider"
 import './Landing.css'
 import { useTranslation } from 'react-i18next';
  
 
 function Home() {
+   const [language, setLanguage] = useState("en");
    const [t]=useTranslation("global")
   return (
     <>
-
+ <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+        <Navbarr />
+      </LanguageContext.Provider>
     
 <section className="banner_main">
          <div className="container">
@@ -31,29 +36,7 @@ function Home() {
             </div>
          </div>
       </section>
-      {/* <!-- Hosting --> */}
-    {/*   <div id="" class="hosting">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="titlepage">
-                     <h2>What’s New In Bankerise</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="web_hosting">
-                     <figure><img  src="images/web.jpg" alt="#"/></figure>
-              
-                     
-                  </div>
-                  
-               </div>
-            
-            </div>
-         </div>
-      </div> */}
+      
       <div id="why" className="why">
          <div className="container">
             <div className="row">
@@ -92,7 +75,7 @@ function Home() {
             </div>
          </div>
       </div>
-      {/* <!-- end Hosting --> */}
+     
       
   
   

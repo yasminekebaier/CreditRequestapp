@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
+import Navbarr from "../Navbar/Navbarr";
+import LanguageContext from "../Store/languageProvider";
 
 const RequestRedirect = () => {
+    const [language, setLanguage] = useState("en");
     const info_text = "Your Request is in a pending status.Our bancking agent will review the data provided.You will recieve a response whithin maximum two days.Check out your maibox. "
     const [text, setText] = useState(info_text)
     const  [owner,setOwner]= useState("")
@@ -11,6 +14,10 @@ const RequestRedirect = () => {
 
     }
     return (
+        <>
+        <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+        <Navbarr />
+      </LanguageContext.Provider>
         <Fragment>
 
             <div className="container py-2 h-100">
@@ -100,7 +107,7 @@ const RequestRedirect = () => {
 
 
         </Fragment>
-
+        </>
     )
 }
 export default RequestRedirect; 

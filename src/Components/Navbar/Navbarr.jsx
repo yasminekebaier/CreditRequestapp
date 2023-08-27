@@ -3,14 +3,16 @@ import { useTranslation } from 'react-i18next';
 import './Navbar.css'; // Importez le fichier CSS
 import { Link } from "react-router-dom";
 import LanguageContext from '../Store/languageProvider';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 const Navbarr = () => {
 
- 
+  const history = useHistory();
   const {language, setLanguage} = useContext(LanguageContext);
   const [t, i18n] = useTranslation("global")
   
+  const storedUserData = localStorage.getItem("userData") ??JSON.parse(localStorage.getItem("userData"))
  
   const  languageHandler=(lang)=> {
 
@@ -24,6 +26,11 @@ const Navbarr = () => {
     else { document.body.dir = 'ltr' }
 
 
+  };
+  const handleLogout = (e) => {
+    e.preventDefault()
+    localStorage.removeItem('userData');
+    history.replace('/')
   };
   return (
     <Fragment>
@@ -48,8 +55,19 @@ const Navbarr = () => {
             <option value="ar"  >  {t("ARABE")} </option>
 
           </select>
+          {storedUserData!=null   ? (
+            <>
+         
+           <Link className="nav-title"  onClick={handleLogout}><button className="btn  btn text-white fs-6" 
+           style ={{"backgroundColor":"#8955EF" ,  "borderRadius":"10px"}}> {t("logout")}
+            </button></Link> </>
+        ) : (
+          // User is logged out, show Login link
+          <Link className="nav-title" to="/login"><button className="btn  btn text-white fs-6" style ={{"backgroundColor":"#9c30a4" ,  "borderRadius":"10px"}}>{t("login")}
+            </button></Link>
+        )}
 
-          <Link className="nav-title" to="/login"><button className="btn  btn text-white fs-6" style ={{"backgroundColor":"#9c30a4" ,  "borderRadius":"10px"}}>{t("login")}  </button></Link>
+          
 
         </div>
         </div>  

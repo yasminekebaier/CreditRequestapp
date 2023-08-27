@@ -19,9 +19,7 @@ function App() {
   <React.Fragment>    
     <Router>
       <div className="App">
-      <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
-        <Navbarr />
-      </LanguageContext.Provider>
+     
         <div className="content">
           <Switch>
           <Route exact path="/">
@@ -38,6 +36,9 @@ function App() {
             </Route>
            
             <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/logout">
               <Login />
             </Route>
             <Route path="/agent">

@@ -16,12 +16,14 @@ import LoanSimulator from "./Components/LoanSimulator/LoanSimulator";
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
+import LanguageContext from "./Components/Store/languageProvider";
+import Navbarr from "./Components/Navbar/Navbarr";
 
 
 
 function Ocr( ) {
   const [loading, setLoading] = useState(false);
-
+  
   const { language, setLanguage } = useContext(Languagecontext); 
   const [amount,setAmount]=useState(0);
   const [month,setMonth]=useState(0);
@@ -154,25 +156,7 @@ const submitHandler= async(event)=>{
 
 
 
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-  const [t] = useTranslation("global")
+ const [t] = useTranslation("global")
 
   // using another useEffect may be correct one  
   useEffect(() => {
@@ -329,7 +313,10 @@ const submitHandler= async(event)=>{
   }
 
   return (
-
+    <>
+<LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+        <Navbarr />
+      </LanguageContext.Provider>
     <div className="w-auto p-3 ">
       <div className="flex space-x-10 ...">
         <Link to='/manual' className="ml-4">{t('Manual')} </Link>
@@ -508,6 +495,7 @@ const submitHandler= async(event)=>{
 
         </form>}
     </div>
+    </>
   )
 }
 

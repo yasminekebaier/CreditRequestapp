@@ -5,7 +5,10 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
+import Navbarr from "./Components/Navbar/Navbarr";
+import LanguageContext from "./Components/Store/languageProvider";
 const Login = () => {
+  const [language, setLanguage] = useState("en");
   const history = useHistory();
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
@@ -20,13 +23,16 @@ const Login = () => {
         password,
       },
     }).then((res) => {
+      localStorage.setItem('userData', JSON.stringify("raniaaaaaaaaaaaaaa"));
+      const storedUserData = localStorage.getItem("userData") ??JSON.parse(localStorage.getItem("userData"))      ;
+      console.log(storedUserData)
 
       const userRole = res.data.user.role;
 
       if (userRole === 'agent') {
         history.push('/agent');
       } else if (userRole === 'customer') {
-        history.push('/request-home');
+        history.push('/manual');
       } else {
 
         console.error("Unknown user role:", userRole);
@@ -37,14 +43,14 @@ const Login = () => {
   }
 
   const [t] = useTranslation("global")
-  /* const[values,setvalue]=useState({ email:'',password:''}) */
-  /*  function handleinput(event){
-     const newobj={...values,[event.target.name]:event.target.value}
-     setvalue(newobj)
-   } */
+ 
 
 
   return (
+    <>
+    <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+    <Navbarr />
+  </LanguageContext.Provider>
     <Fragment>
 
       <div className="h-screen w-full bg-gray-100 flex items-center justify-center  pt-20">
@@ -74,7 +80,7 @@ const Login = () => {
         </div>
       </div>
     </Fragment>
-
+    </>
 
   );
 

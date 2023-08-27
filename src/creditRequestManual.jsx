@@ -7,8 +7,10 @@ import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
+import LanguageContext from './Components/Store/languageProvider';
+import Navbarr from './Components/Navbar/Navbarr';
 const CreditRequestManual = () => {
-
+  const [language, setLanguage] = useState("en");
   const [amount,setAmount]=useState(0);
   const [month,setMonth]=useState(0);
   // Handle Submit  
@@ -91,7 +93,10 @@ const submitHandler= async(event)=>{
 }
 
   return (
-
+    <>
+<LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+        <Navbarr />
+      </LanguageContext.Provider>
     <div className="w-auto p-3 ">
       <div className="flex space-x-4 ...">
         <Link to='/manual' className="ml-4">{t('Manual')}</Link>
@@ -200,6 +205,7 @@ const submitHandler= async(event)=>{
       </form>
     
     </div>
+    </>
   )
 }
 

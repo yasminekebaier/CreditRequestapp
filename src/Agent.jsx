@@ -2,10 +2,12 @@ import React from  'react';
 import axios from "axios";
 import { useState,useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
+import Navbarr from './Components/Navbar/Navbarr';
+import LanguageContext from './Components/Store/languageProvider';
 
 
 function Agent (){
-    
+  const [language, setLanguage] = useState("en");  
   const [clients, setClients] = useState([]);
   const { id } = useParams(); 
  
@@ -32,6 +34,10 @@ function Agent (){
     
     
     return(
+      <>
+      <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+        <Navbarr />
+      </LanguageContext.Provider>
 <div className="home"><h4>customers:</h4>
       {clients.map(client => (
         <table className="table align-middle mb-0 bg-white" key={client.cin_number}>
@@ -71,6 +77,7 @@ function Agent (){
 </table>
       ))}
     </div>
+    </>
     );
 }
 export default Agent;
