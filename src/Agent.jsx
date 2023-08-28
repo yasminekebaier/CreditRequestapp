@@ -38,45 +38,63 @@ function Agent (){
       <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
         <Navbarr />
       </LanguageContext.Provider>
-<div className="home"><h4>customers:</h4>
-      {clients.map(client => (
-        <table className="table align-middle mb-0 bg-white" key={client.cin_number}>
-  <thead className="bg-light">
-    <tr>
-      <th>Name</th>
-      <th>email & Mobil Number</th>
+<div className="home">
+  <h4>customers:</h4>
       
-      <th>CIN</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-         
-           
-          <div className="ms-3">
-            <p className="fw-bold mb-1">{client.surname}</p>
-            <p className="text-muted mb-0">{client.name}</p>
-          </div>
-        
-      </td>
-      <td>
-        <p className="fw-normal mb-1">{ client.email}</p>
-        <p className="text-muted mb-0"> {client.phone_number}</p>
-      </td>
-      
-      <td>{client.cin}</td>
-      <td>
-      <Link to={`/client/${client._id}`}> <button type="button" className="btn btn-link btn-sm btn-rounded">
+  <table className="table align-middle mb-0 bg-white">
+    <thead className="bg-light">
+      <tr>
+          <th>Request Id </th>
+          <th>Phone Number </th>
+          <th>CIN Number</th>
+          <th>status</th>
+          <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+    {clients.map(client => (
+        <>
+      <tr>
+          <td>
+            <div className="d-flex align-items-center">
+                
+                  <div className="ms-3">
+                      <h2 className="fw-bold mb-1">
+                      {client.name} {client.surname}
+                      </h2>
+                      <p className="text-muted mb-0">{ client.email}</p>
+                  </div>
+              </div>
+          </td>
+          <td>
+          {client.phone_number}
+          </td>
+          <td>
+          {client.phone_number}
+          </td>
+          <td><td>
+  {client.status === 'Accepted' ? (
+    <span className="badge badge-success rounded-pill d-inline">Accepted</span>
+  ) : client.status === 'Refused' ? (
+    <span className="badge badge-danger rounded-pill d-inline">Refused</span>
+  ): (
+    <span className="badge badge-primary rounded-pill d-inline">{client.status}</span>
+  )}
+</td></td>
+          <td>
+          <Link to={`/client/${client._id}`}> <button type="button" className="btn btn-link btn-sm btn-rounded">
           Details
         </button></Link>
-      </td>
-    </tr>
-  </tbody>
-</table>
-      ))}
-    </div>
+          </td>
+      </tr>
+      </>
+ 
+
+
+  ))}
+</tbody>
+  </table>
+</div>
     </>
     );
 }

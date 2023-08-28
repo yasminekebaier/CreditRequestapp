@@ -7,10 +7,12 @@ import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import LanguageContext from './Components/Store/languageProvider';
 import Navbarr from './Components/Navbar/Navbarr';
 const CreditRequestManual = () => {
   const [language, setLanguage] = useState("en");
+  const history = useHistory();
   const [amount,setAmount]=useState(0);
   const [month,setMonth]=useState(0);
   // Handle Submit  
@@ -90,13 +92,20 @@ const submitHandler= async(event)=>{
   const  status= 'pending'
   const result=  await axios.post('http://localhost:4000/creditRequest/new',{...values,status,amount,month} );
   console.log("the result is a succes ", result); 
+  console.log('Before localStorage.setItem');
+localStorage.setItem("hasFilledForm", true);
+console.log('After localStorage.setItem');
+  
+      // Redirigez l'utilisateur vers la page souhaitée
+      history.push('/request-home'); 
 }
 
   return (
     <>
-<LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
-        <Navbarr />
-      </LanguageContext.Provider>
+    <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+            <Navbarr />
+          </LanguageContext.Provider>
+
     <div className="w-auto p-3 ">
       <div className="flex space-x-4 ...">
         <Link to='/manual' className="ml-4">{t('Manual')}</Link>

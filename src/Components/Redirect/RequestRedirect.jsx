@@ -1,8 +1,10 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Navbarr from "../Navbar/Navbarr";
 import LanguageContext from "../Store/languageProvider";
+import axios from "axios";
 
 const RequestRedirect = () => {
+    const [requestData, setRequestData] = useState(null);
     const [language, setLanguage] = useState("en");
     const info_text = "Your Request is in a pending status.Our bancking agent will review the data provided.You will recieve a response whithin maximum two days.Check out your maibox. "
     const [text, setText] = useState(info_text)
@@ -13,6 +15,16 @@ const RequestRedirect = () => {
         event.preventDefault(); 
 
     }
+    useEffect(() => {
+        // Récupérer les données de la base de données
+        axios.get("http://localhost:4000/creditRequest/show")
+            .then(response => {
+                setRequestData(response.data); // Mettre à jour le state avec les données récupérées
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    }, []);
     return (
         <>
         <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
@@ -53,23 +65,17 @@ const RequestRedirect = () => {
                 <table className="table align-middle mb-0 bg-white">
                     <thead className="bg-light">
                         <tr>
-                            <th>Request Id </th>
-                            <th>owner </th>
-                            <th>Date</th>
+                            <th>Request  </th>
+                            <th>phone_number </th>
+                            <th>cin_number</th>
                             <th>status</th>
                             <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {/* <tr>
                             <td>
                                 <div className="d-flex align-items-center">
-                                    <img
-                                        src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                        alt=""
-                                        style={{ "width": "45px", "height": "45px" }}
-                                        className="rounded-circle"
-                                    />
                                     <div className="ms-3">
                                         <p className="fw-bold mb-1">
                                         Ahmed safta
@@ -91,8 +97,35 @@ const RequestRedirect = () => {
                                     Edit
                                 </button>
                             </td>
-                        </tr>
-                     
+                        </tr> */}
+                        {requestData && requestData.map(request => (
+                    <tr >
+                        <td>
+                                <div className="d-flex align-items-center">
+                                    <div className="ms-3">
+                                        <h2 className="fw-bold mb-1">
+                                        {request.name}
+                                        </h2>
+                                        <h2 className="text-muted mb-0">{request.email}</h2>
+                                    </div>
+                                </div>
+                            </td>
+                        <td>
+                                <h2 className="fw-normal mb-1">{request.phone_number}</h2>
+                                <h2 className="text-muted mb-0">{request.job}</h2>
+                            </td>
+                        <td>{request.cin_number}</td>
+                        <td>
+                                <span className="badge badge-success rounded-pill d-inline">{request.status}</span>
+                            </td>
+                            
+                        <td>
+                                <button type="button" className="btn btn-link btn-sm btn-rounded">
+                                    Edit
+                                </button>
+                            </td>
+                    </tr>
+                     ))}
                     </tbody>
                 </table>
 

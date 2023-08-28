@@ -29,8 +29,11 @@ const Navbarr = () => {
   };
   const handleLogout = (e) => {
     e.preventDefault()
+  
     localStorage.removeItem('userData');
     history.replace('/')
+    
+    
   };
   return (
     <Fragment>

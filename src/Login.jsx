@@ -1,5 +1,5 @@
 /*import axios from "axios";*/
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,19 @@ const Login = () => {
   const history = useHistory();
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
+  useEffect(() => {
+   // Check if the user is already authenticated
+   const storedUserData = localStorage.getItem("userData");
+   if (storedUserData) {
+     // User is authenticated, check if the form is filled
+     const hasFilledForm = localStorage.getItem("hasFilledForm");
+     if (hasFilledForm) {
+       history.push("/request-home");
+     } else {
+       history.push("/manual");
+     }
+   }
+  }, []);
   const handleLogin = (e) => {
     e.preventDefault();
     axios({
@@ -23,18 +36,30 @@ const Login = () => {
         password,
       },
     }).then((res) => {
+      console.log('Login response:', res.data); // Ajoutez ce log pour vérifier la réponse de l'API de connexion
+
       localStorage.setItem('userData', JSON.stringify("raniaaaaaaaaaaaaaa"));
-      const storedUserData = localStorage.getItem("userData") ??JSON.parse(localStorage.getItem("userData"))      ;
-      console.log(storedUserData)
+      const storedUserData = localStorage.getItem("userData") ?? JSON.parse(localStorage.getItem("userData"));
+      console.log('Stored user data:', storedUserData); // Ajoutez ce log pour vérifier les données utilisateur stockées
+
+      const hasFilledForm = localStorage.getItem("hasFilledForm");
+      console.log('hasFilledForm:', hasFilledForm); // Ajoutez ce log pour vérifier si hasFilledForm est défini
 
       const userRole = res.data.user.role;
+      console.log('User role:', userRole); // Ajoutez ce log pour vérifier le rôle de l'utilisateur
 
       if (userRole === 'agent') {
         history.push('/agent');
       } else if (userRole === 'customer') {
-        history.push('/manual');
+        // Check if the form is filled
+        if (hasFilledForm) {
+          console.log('Redirecting to request-home'); // Ajoutez ce log pour vérifier la redirection
+          history.push('/request-home');
+        } else {
+          console.log('Redirecting to manual'); // Ajoutez ce log pour vérifier la redirection
+          history.push('/manual');
+        }
       } else {
-
         console.error("Unknown user role:", userRole);
       }
     }).catch(error => {
