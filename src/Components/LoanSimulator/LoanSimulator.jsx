@@ -34,8 +34,7 @@ const LoanSimulator = (props) => {
             const month_Payement= (amount+ amount*(nb_years*interest/100))/month
             setTotalPayement(roundToDecimalPlaces(total_Payement,1))
             setMonthPayement(roundToDecimalPlaces(month_Payement,1))
-        //     const  month_payement=((amount+ amount*(nb_years*interest/100))/month)
-        //     setMonthPayement(month_payement)
+     
         }
 
     }
@@ -43,7 +42,7 @@ const LoanSimulator = (props) => {
     
 
     useEffect(()=>{
-        // props.getCreditData(amount,month)
+    
         LoanCalculator()
 
     props.getCreditData(amount,month)
@@ -54,7 +53,7 @@ const LoanSimulator = (props) => {
     return (
         <Fragment>
             <section className="bg-light ">
-            <div className="container mx-5 " >
+            <div className="container " >
                 <h1  className="text-center mt-5" style={{ fontSize: '40px', color: "#55448A" ,}}>{t('Loan Simulator')}</h1>
                 <br />
                 <div className="row justify-content-center align-items-center">

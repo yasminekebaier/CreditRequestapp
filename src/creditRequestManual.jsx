@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,7 @@ const CreditRequestManual = () => {
       ...prevValues,
       [event.target.name]: event.target.value,
     }));
+    console.log("the values are", values ); 
   }
 
 
@@ -54,8 +55,8 @@ const userSchema= yup.object().shape({
 
 
       const forms = document.querySelectorAll('.needs-validation')
-
-
+ 
+     
       Array.from(forms).forEach(form => {
         form.addEventListener('submit', event => {
           if (!form.checkValidity()) {
@@ -70,72 +71,52 @@ const userSchema= yup.object().shape({
   }, []);
  
   // Submit  handler 
-const submitHandler= async(event)=>{
-  setStatus("Pending");
-    console.log('Before form submission');
-
-    event.preventDefault()
-    axios({
-      method: "post",
-      url: `http://localhost:4000/creditRequest/new`,
-      data: { ...values, status: 'pending' }
-
-
-
-    }).then((res) => {
-
-      console.log("Registration successful");
-    }).catch(error => {
-      console.error("Registration error:", error);
-    });
-   
-  const  status= 'pending'
-  const result=  await axios.post('http://localhost:4000/creditRequest/new',{...values,status,amount,month} );
-  console.log("the result is a succes ", result); 
-  console.log('Before localStorage.setItem');
-localStorage.setItem("hasFilledForm", true);
-console.log('After localStorage.setItem');
+  const onSubmit = async(data) => {
+    setStatus("Pending");
+    console.log('the data is ',data);
+    const result=  await axios.post('http://localhost:4000/creditRequest/new',
+      {...data,status,amount,month} );
+    console.log("the result is a succes ", result); 
+    
+  };
   
-      // Redirigez l'utilisateur vers la page souhaitée
-      history.push('/request-home'); 
-}
 
   return (
-    <>
+  <Fragment>
     <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
             <Navbarr />
           </LanguageContext.Provider>
-
+   <div className="container">
     <div className="w-auto p-3 ">
       <div className="flex space-x-4 ...">
         <Link to='/manual' className="ml-4">{t('Manual')}</Link>
         <Link to='/ocr'>  {t('ocr')}</Link>
       </div>
 
-      <form className="row g-3 needs-validation  "   onSubmit={handleSubmit(submitHandler)}  noValidate>
+      <form className="row g-3 needs-validation  "    onSubmit={handleSubmit(onSubmit)}  noValidate>
  <div className="col-md-4">
    <label htmlFor="validationCustom01" className="form-label">{t('First name')}</label>
-   <input name='name' type="text" className="form-control" id="validationCustom01" onChange={handleinput}  required {...register("name")}/>
+   <input name='name' type="text" className="form-control" id="validationCustom01" required {...register("name")}/>
    <p>{errors.name?.message}</p>
    
  </div>
  <div className="col-md-4">
    <label htmlFor="validationCustom02" className="form-label">{t('Lastname')}</label>
-   <input name='surname' type="text" className="form-control" id="validationCustom02" onChange={handleinput}    required {...register("surname")}/>
+   <input name='surname' type="text" className="form-control" id="validationCustom02"   required {...register("surname")} />
    <p>{errors.surname?.message}</p>
  </div>
  <div className="col-md-4">
    <label htmlFor="validationCustomUsername" className="form-label">{t('Email')}</label>
    <div className="input-group has-validation">
      <span className="input-group-text" id="inputGroupPrepend">@</span>
-     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" onChange={handleinput}  required  {...register("email")}/>
+     <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend"   required  {...register("email")}/>
    </div>
    <p>{errors.email?.message}</p>
  </div> 
 
  <div className="col-md-4">
    <label htmlFor="Mobil Number" className="form-label">{t('Mobile Number')}</label>
-   <input name='phone_number' type="text" className="form-control" id="Mobil Number" onChange={handleinput}   required   {...register("phone_number")}/>
+   <input name='phone_number' type="text" className="form-control" id="Mobil Number"    required   {...register("phone_number")}/>
    <p>{errors.phone_number?.message}</p>
  </div>
   
@@ -143,30 +124,30 @@ console.log('After localStorage.setItem');
 
    <div className="col-md-4">
    <label htmlFor="validationCustom03" className="form-label">{t('City')}</label>
-   <input name='city' type="text" className="form-control" id="validationCustom03" onChange={handleinput}  required   {...register("city")}/>
+   <input name='city' type="text" className="form-control" id="validationCustom03" required   {...register("city")}/>
    <p>{errors. city?.message}</p>
  </div>
 
  <div className="col-md-4">
    <label htmlFor="Address" className="form-label">{t('Address')}</label>
-   <input name='address' type="text" className="form-control" id="Address" onChange={handleinput}  required {...register("address")}/>
+   <input name='address' type="text" className="form-control" id="Address"  required {...register("address")}/>
    <p>{errors.address?.message}</p>
     </div>
 
 
    <div className="col-md-4">
    <label htmlFor="NID" className="form-label"> {t('NID')}</label>
-   <input name='cin_number' type="text" className="form-control" id="NID" onChange={handleinput}  required {...register("cin_number")}/>
+   <input name='cin_number' type="text" className="form-control" id="NID"   required {...register("cin_number")}/>
    <p>{errors.cin_number?.message}</p></div>
 
    <div className="col-md-4">
    <label htmlFor="birth_date" className="form-label"> {t('date')}</label>
-   <input name='birth_date' type="date" className="form-control" id="birth_date" onChange={handleinput}  required {...register("birth_date")}/>
+   <input name='birth_date' type="date" className="form-control" id="birth_date"  required {...register("birth_date")}/>
    <p>{errors.birth_date?.message}</p></div>
    
    <div className="col-md-4">
    <label htmlFor="validationCustom05" className="form-label">{t('Zip')}</label>
-   <input name='zipCode' type="text" className="form-control" id="validationCustom05" onChange={handleinput}  required {...register("zipCode")}/>
+   <input name='zipCode' type="number" className="form-control" id="validationCustom05"   required {...register("zipCode")}/>
    <p>{errors.zipCode?.message}</p>
  </div>
 
@@ -174,21 +155,21 @@ console.log('After localStorage.setItem');
 
  <div className="col-md-4">
    <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
-   <input name='job' type="text" className="form-control" id="validationCustom111" onChange={handleinput}  required {...register("job")}/>
+   <input name='job' type="text" className="form-control" id="validationCustom111" required {...register("job")}/>
    <p>{errors.job?.message}</p>
  </div>
 
 
  <div className="col-md-4">
    <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
-   <input name='motherName' type="text" className="form-control" id="validationCustom112" onChange={handleinput}  required {...register("motherName")}/>
+   <input name='motherName' type="text" className="form-control" id="validationCustom112"  required {...register("motherName")}/>
    <p>{errors.motherName?.message}</p>
  </div>
 
 
  <div className="col-md-4">
    <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
-   <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113" onChange={handleinput}  required {...register("NID_creation_date")}/>
+   <input name='NID_creation_date' type="date" className="form-control" id="validationCustom113"  required {...register("NID_creation_date")}/>
    <p>{errors.NID_creation_date?.message}</p>
  </div>
  
@@ -212,9 +193,10 @@ console.log('After localStorage.setItem');
                 </div>
 
       </form>
-    
+  
     </div>
-    </>
+    </div>
+    </Fragment>
   )
 }
 
