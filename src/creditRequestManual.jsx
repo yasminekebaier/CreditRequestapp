@@ -1,27 +1,34 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
 import './range.css'
 import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
+import { Link } from "react-router-dom";
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+// import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import LanguageContext from './Components/Store/languageProvider';
 import Navbarr from './Components/Navbar/Navbarr';
+import Login from './Login'
+
 const CreditRequestManual = () => {
   const [language, setLanguage] = useState("en");
-  const history = useHistory();
   const [amount,setAmount]=useState(0);
   const [month,setMonth]=useState(0);
+  const isLoggedIn= localStorage.getItem("isLoggedIn");
+  const role =localStorage.getItem('role')
+  const navigate =useNavigate(); 
   // Handle Submit  
   const getCreditData =(amount,month)=>{
     setAmount(amount); 
     setMonth(month);}
+    const owner=  localStorage.getItem("userName");
+    console.log("the userData is ", owner); 
 
   const [t] = useTranslation("global")
-  const [status, setStatus] = useState('Deny')
+  const [status, setStatus] = useState('Pending')
   const [values, setvalue] = useState({ name: '', surname: '', email: '', phone_number: '', city: '', address: '', cin_number: '', birth_date: '', zipCode: '', job: '', motherName: '', NID_creation_date: '' })
   function handleinput(event) {
     setvalue((prevValues) => ({
@@ -48,12 +55,18 @@ const userSchema= yup.object().shape({
   const {register,handleSubmit, formState:{errors}}=useForm({
     resolver : yupResolver(userSchema),
   }) ;
+  
+useEffect(()=>{
+  if (isLoggedIn=="false"|| !role)
+  navigate('/', { replace: true });
+
+})
 
   useEffect(() => {
     (() => {
       'use strict'
 
-
+     
       const forms = document.querySelectorAll('.needs-validation')
  
      
@@ -75,8 +88,9 @@ const userSchema= yup.object().shape({
     setStatus("Pending");
     console.log('the data is ',data);
     const result=  await axios.post('http://localhost:4000/creditRequest/new',
-      {...data,status,amount,month} );
-    console.log("the result is a succes ", result); 
+      {...data,status,amount,month,owner} );
+      history.push('/request-home');
+    console.log("the result is a succes ",result); 
     
   };
   
@@ -86,9 +100,15 @@ const userSchema= yup.object().shape({
     <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
             <Navbarr />
           </LanguageContext.Provider>
+     {isLoggedIn=="false" || !isLoggedIn ?(
+      <Fragment>
+        <Login></Login>
+      </Fragment>
+     ):     
+
    <div className="container">
     <div className="w-auto p-3 ">
-      <div className="flex space-x-4 ...">
+      <div className="flex space-x-4 mb-5 ...">
         <Link to='/manual' className="ml-4">{t('Manual')}</Link>
         <Link to='/ocr'>  {t('ocr')}</Link>
       </div>
@@ -195,7 +215,8 @@ const userSchema= yup.object().shape({
       </form>
   
     </div>
-    </div>
+    
+    </div>}
     </Fragment>
   )
 }

@@ -3,14 +3,16 @@ import { useTranslation } from 'react-i18next';
 import './Navbar.css'; // Importez le fichier CSS
 import { Link } from "react-router-dom";
 import LanguageContext from '../Store/languageProvider';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Navigate } from 'react-router-dom';
+
 
 
 const Navbarr = () => {
 
-  const history = useHistory();
+  // const history = useHistory();
   const {language, setLanguage} = useContext(LanguageContext);
   const [t, i18n] = useTranslation("global")
+  // const [isLoggedOut, setIsLoggedOut]=useState("false"); 
   
   const storedUserData = localStorage.getItem("userData") ??JSON.parse(localStorage.getItem("userData"))
  
@@ -28,18 +30,20 @@ const Navbarr = () => {
 
   };
   const handleLogout = (e) => {
-    e.preventDefault()
-  
+      
+     console.log("Why is not redirecting"); 
     localStorage.removeItem('userData');
-    history.replace('/')
+    localStorage.removeItem('userName'); 
+    localStorage.setItem('isLoggedIn',"false"); 
+    window.location.reload();
+
+   
     
     
   };
   return (
     <Fragment>
 
-   
-    
       <nav className="navbar">
       <div className="container"> 
           <div className="logo-container">
@@ -69,8 +73,6 @@ const Navbarr = () => {
           <Link className="nav-title" to="/login"><button className="btn  btn text-white fs-6" style ={{"backgroundColor":"#9c30a4" ,  "borderRadius":"10px"}}>{t("login")}
             </button></Link>
         )}
-
-          
 
         </div>
         </div>  

@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min"
+// import { Link } from "react-router-dom/cjs/react-router-dom.min"
+import { Link } from "react-router-dom";
 import './ocr.css'
 import './range.css'
 import { useEffect, useState, useContext } from 'react';
@@ -14,28 +15,30 @@ import Languagecontext from "./Components/Store/languageProvider";
 import Loader from "./Components/Loader/Loader"
 import LoanSimulator from "./Components/LoanSimulator/LoanSimulator";
 import * as yup from "yup"
-import {yupResolver} from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
 import LanguageContext from "./Components/Store/languageProvider";
 import Navbarr from "./Components/Navbar/Navbarr";
 
 
 
-function Ocr( ) {
+function Ocr() {
+  const [loadingFront,setLoadingFront]=useState(false) ; 
+  const [loadingBack,setLoadingBack]=useState(false) ; 
   const [loading, setLoading] = useState(false);
-  
-  const { language, setLanguage } = useContext(Languagecontext); 
-  const [amount,setAmount]=useState(0);
-  const [month,setMonth]=useState(0);
+
+  const { language, setLanguage } = useContext(Languagecontext);
+  const [amount, setAmount] = useState(0);
+  const [month, setMonth] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [croppedImage, setCroppedImage] = useState(null);
   const [src, selectFile] = useState(null)
 
-// Get Credit data  to extarct it from the LoanSimulator  
-const getCreditData =(amount,month)=>{
-  setAmount(amount); 
-  setMonth(month);
-} 
+  // Get Credit data  to extarct it from the LoanSimulator  
+  const getCreditData = (amount, month) => {
+    setAmount(amount);
+    setMonth(month);
+  }
 
 
 
@@ -96,17 +99,17 @@ const getCreditData =(amount,month)=>{
       }
     }
     catch (err) {
-      console.log("catch it   ", err)
+      console.log("catch it ", err)
     }
   }
-//  Submit Handler 
+  //  Submit Handler 
 
-const submitHandler= async(event)=>{
-  event.preventDefault()
-  const  status= 'pending'
-  const result=  await axios.post('http://localhost:4000/creditRequest/new',{...values,status,amount,month} );
-  console.log("the result is a succes ", result); 
-}
+  const submitHandler = async (event) => {
+    event.preventDefault()
+    const status = 'pending'
+    const result = await axios.post('http://localhost:4000/creditRequest/new', { ...values, status, amount, month });
+    console.log("the result is a succes ", result);
+  }
 
   const getcroppe = async () => {
     if (src) {
@@ -156,59 +159,59 @@ const submitHandler= async(event)=>{
 
 
 
- const [t] = useTranslation("global")
+  const [t] = useTranslation("global")
 
   // using another useEffect may be correct one  
   useEffect(() => {
 
-    console.log("the language is", language)
     onLanguageChange(language)
 
-    console.log("the amount is ",amount); 
-    console.log("the month is ",month);
+    console.log("the amount is ", amount);
+    console.log("the month is ", month);
 
 
-  }, [language, setValues,month, amount]) 
+  }, [language, setValues, month, amount])
 
 
-  const userSchema= yup.object().shape({
-    name:yup.string().required(t("error1")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")) ,
-    email:yup.string().email(t("error33")).required(t("error3")),
-    surname:yup.string().required(t("error2")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")),
-    phone_number:yup.string().required(t("error4")).matches(/^[0-9]+$/, t("digits")).max(8,t("max8")) ,
-    city:yup.string().required(t("error6")),
-    address:yup.string().required(t("error7")),
-    cin_number:yup.string().required(t("error8")).matches(/^[0-9]+$/,t("digits")).max(8,t("max8"))  ,
-    birth_date:yup.string() .required(t("error9")),
-    zipCode:yup.string().required(t("error10")).matches(/^[0-9]+$/,t("digits")).max(4,t("max4")) ,
-    job:yup.string().required(t("error13")),
-    motherName:yup.string().required(t("error14")).matches(/^[ aA-zZ ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")),
-    NID_creation_date:yup .string() .required(t("error15"))})
-    const {register,handleSubmit, formState:{errors}}=useForm({
-      resolver : yupResolver(userSchema),
-    }) ;
+  const userSchema = yup.object().shape({
+    name: yup.string().required(t("error1")).matches(/^[aA-zZ]+$/, t("letter")).min(2, t("min")).max(10, t("max")),
+    email: yup.string().email(t("error33")).required(t("error3")),
+    surname: yup.string().required(t("error2")).matches(/^[aA-zZ]+$/, t("letter")).min(2, t("min")),
+    phone_number: yup.string().required(t("error4")).matches(/^[0-9]+$/, t("digits")).max(8, t("max8")),
+    city: yup.string().required(t("error6")),
+    address: yup.string().required(t("error7")),
+    cin_number: yup.string().required(t("error8")).matches(/^[0-9]+$/, t("digits")).max(8, t("max8")),
+    birth_date: yup.string().required(t("error9")),
+    zipCode: yup.string().required(t("error10")).matches(/^[0-9]+$/, t("digits")).max(4, t("max4")),
+    job: yup.string().required(t("error13")),
+    motherName: yup.string().required(t("error14")).matches(/^[ aA-zZ ]+$/, t("letter")).min(2, t("min")).max(10, t("max")),
+    NID_creation_date: yup.string().required(t("error15"))
+  })
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(userSchema),
+  });
 
 
-    useEffect(() => {
-      (() => {
-        'use strict'
-  
-  
-        const forms = document.querySelectorAll('.needs-validation')
-  
-  
-        Array.from(forms).forEach(form => {
-          form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              
-            }
-  
-            form.classList.add('was-validated')
-          }, false)
-        })
-      })()
-    }, []);
+  useEffect(() => {
+    (() => {
+      'use strict'
+
+
+      const forms = document.querySelectorAll('.needs-validation')
+
+
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  }, []);
 
 
 
@@ -227,15 +230,13 @@ const submitHandler= async(event)=>{
       reader.readAsDataURL(file);
     }
 
-    //  send axios request to flak api 
+    //  If the front cin is selected 
     if (event.target.id == "image-upload1") {
-
+      setLoadingFront(true);
       try {
-        setLoading(true);
+        // send axios request to the server
         const response = await axios.post('http://localhost:5000/flask_api/front_image_info', formData);
-        
-        setLoading(false)
-        // added code 
+        // Detect language selection 
         if (language === 'ar') {
           setValues(prevValues => ({
             ...prevValues,
@@ -244,22 +245,21 @@ const submitHandler= async(event)=>{
             birth_Date: response.data.cr_birthDate,
             city: response.data.data.cr_state,
             cin_number: response.data.data.cr_number,
-
           }));
         }
-
         else {
-          const en_name = await tr(response.data.data.cr_name1+ response.data.data.cr_name2)
+          const en_name = await tr(response.data.data.cr_name1 + response.data.data.cr_name2)
           const en_surname = await translate(response.data.data.cr_surname, { from: 'ar', to: 'en' },);
           const en_birth_Date = await translate(response.data.cr_birthDate, { from: 'ar', to: 'en' });
           const en_city = await translate(response.data.data.cr_state, { from: 'ar', to: 'en' });
           const en_cin_number = await translate(response.data.data.cr_number, { from: 'ar', to: 'en' });
+          
           setValues(prevValues => ({
             ...prevValues,
             name: en_name,
-            surname:en_surname,
+            surname: en_surname,
             birth_Date: en_birth_Date,
-            city: en_city ,
+            city: en_city,
             cin_number: en_cin_number,
           }));
 
@@ -269,19 +269,18 @@ const submitHandler= async(event)=>{
         console.error(error);
       }
     }
+    setLoadingFront(false); 
 
     try {
-      setLoading(true)
-      const startTime = performance.now();
+      // setLoadingBack(true)
+
       const response = await axios.post('http://localhost:5000/flask_api/back_image_info', formData);
-      const endTime = performance.now();
-      const timeTaken = endTime - startTime;
-      
       console.log("the response is ", response)
+
       //  translate all the items in the form
       // await translate(  response.data.data.mother_name, { from: 'ar', to: 'en' });
 
-      setLoading(false);
+     
       if (language === 'ar') {
         setValues(prevValues => ({
           ...prevValues,
@@ -310,192 +309,177 @@ const submitHandler= async(event)=>{
     catch (err) {
       console.log("the error is ", err);
     }
+    // setLoadingBack(false);
   }
-
+ 
   return (
-    <>
-<LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
+    <Fragment>
+
+      <LanguageContext.Provider value={{ language: language, setLanguage: setLanguage }}>
         <Navbarr />
       </LanguageContext.Provider>
-    <div className="w-auto p-3 ">
-      <div className="flex space-x-10 ...">
-        <Link to='/manual' className="ml-4">{t('Manual')} </Link>
-        <Link to='/ocr'>    {t('ocr')}</Link>
-      </div>
-      <div className="images-container row">
-        <div className="col-md-6">
-          <div className="image-with-button">
-            <label htmlFor="image-upload1">
-              {/* croppedImage || */}
-              <img src={image1} alt="Image 1"
-              />
-              <span className="blue-button">{t('Download')}</span>
-              {/* <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Crop</button> */}
-              {/*  model */}
-              {/*  ?????????????????? this is the place of Yasmine croping code      ??????????????? */}
-              {/*  */}
-              {/* finmodel */}
-            </label>
-            {/* Added cod by Ahmed   */}
-            <input
-              type="file"
-              id="image-upload1"
-              name="file"
-              accept="image/*"
-              onChange={(e) => handleImageChange(e, setImage1)}
-              style={{ display: "none" }}
-            />
-
-
+      <div className="container">
+        <div className="w-auto p-3 ">
+          <div className="flex space-x-10 ...">
+            <Link to='/manual' className="ml-4">{t('Manual')} </Link>
+            <Link to='/ocr'>    {t('ocr')}</Link>
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className="image-with-button">
-            <label htmlFor="image-upload2">
-              <img src={image2} alt="Image 2" />
-              <span className="blue-button">{t('Download')}</span>
-            </label>
-            <input
-              type="file"
-              id="image-upload2"
-              name="file"
-              accept="image/*"
-              onChange={(e) => handleImageChange(e, setImage2)}
-              style={{ display: "none" }}
-            />
-          </div>
-        </div>
-      </div>
-      {loading ?
-        <Fragment>
-          <Loader />
-        </Fragment>
-        :
-        <form className="row g-3 needs-validation  "  onSubmit={handleSubmit(submitHandler)} noValidate>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom01" className="form-label">{t("First name")}</label>
-          <input name='name' type="text" className="form-control" id="validationCustom01" value={values.name} onChange={handleinput} required {...register("name")} />
-          <p>{errors.name?.message}</p>
-
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustom02" className="form-label">{t("Lastname")}</label>
-          <input name='surname' type="text" className="form-control" id="validationCustom02" value={values.surname} onChange={handleinput} required {...register("surname")}/>
-          <p>{errors.surname?.message}</p>
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="validationCustomUsername" className="form-label">{t("Email")}</label>
-          <div className="input-group has-validation">
-            <span className="input-group-text" id="inputGroupPrepend">@</span>
-            <input name='email' type="text" className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" value={values.email} onChange={handleinput} required {...register("email")} />
-             
-          </div>
-          <p>{errors.email?.message}</p>
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="Mobile Number" className="form-label">{t("Mobile Number")}</label>
-          <input name='phone_number' type="text" className="form-control" id="Mobile Number" value={values.phone_number} onChange={handleinput} required {...register("phone_number")}/>
-          <p>{errors.phone_number?.message}</p>
-        </div>
-       { /* <div className="col-md-4">
-          <label htmlFor="country" className="form-label">{t("Country")}</label>
-          <input name='country' type="text" className="form-control" id="Country" value={values.country} onChange={handleinput} required />
-          <div className="invalid-feedback">
-            {t('error5')}
-          </div></div> */}
+          <div className="images-container row">
+            <div className="col-md-6">
+              <div className="image-with-button">
+                <label htmlFor="image-upload1">
+                  {/* croppedImage || */}
+                  <img src={image1} alt="Image 1"
+                  />
+                  <span className="blue-button">{t('Download')}</span>
+                  {/* <button className='btn btn-primary' onClick={() => setModalIsOpen(true)}>Crop</button> */}
+                  {/*  model */}
+                  {/*  ?????????????????? this is the place of Yasmine croping code      ??????????????? */}
+                  {/*  */}
+                  {/* finmodel */}
+                </label>
+                {/* Added code bby Ahmed   */}
+                <input
+                  type="file"
+                  id="image-upload1"
+                  name="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setImage1)}
+                  style={{ display: "none" }}
+                />
 
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom03" className="form-label">{t("City")}</label>
-          <input name='city' type="text" className="form-control" id="validationCustom03" value={values.city} onChange={handleinput} required {...register("city")}/>
-          <p>{errors.city?.message}</p>
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="Address" className="form-label">{t("Address")}</label>
-          <input name='address' type="text" className="form-control" id="Address" value={values.address} onChange={handleinput} required {...register("address")}/>
-          <p>{errors.address?.message}</p></div>
-
-
-        <div className="col-md-4">
-          <label htmlFor="NID" className="form-label">{t("NID")}</label>
-          <input name='cin_number' type="text" className="form-control" id="NID" value={values.cin_number} onChange={handleinput} required {...register("cin_number")}/>
-          <p>{errors.cin_number?.message}</p></div>
-
-        <div className="col-md-4">
-          <label htmlFor="birth_date" className="form-label">{t('date')}</label>
-          <input name='birth_date' type="text" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput} required {...register("birth_date")}/>
-          <p>{errors.birth_date?.message}</p></div>
-
-        <div className="col-md-4">
-          <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
-          <input name='zipCode' type="text" className="form-control" id="validationCustom05" value={values.zipCode} onChange={handleinput} required {...register("zipCode")}/>
-          <p>{errors.zipCode?.message}</p>
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
-          <input name='job' type="text" className="form-control" id="validationCustom111" value={values.job} onChange={handleinput} required {...register("job")}/>
-          <p>{errors.job?.message}</p>
-        </div>
-
-
-        <div className="col-md-4">
-          <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
-          <input name='motherName' type="text" className="form-control" id="validationCustom112" value={values.motherName} onChange={handleinput} required {...register("motherName")}/>
-          <p>{errors.motherName?.message}</p>
-        </div>
-
-
-        <div className="col-md-4">
-          <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
-          <input name='NID_creation_date' type="text" className="form-control" id="validationCustom113" value={values.NID_creation_date} onChange={handleinput} required {...register("NID_creation_date")}/>
-          <p>{errors.NID_creation_date?.message}</p>
-        </div>
-
-
-        {/* <div className="col-md-3">
-          <label htmlFor="validationCustom04" className="form-label">
-          </label>
-          <select name='gender' className="form-select" id="validationCustom04" onChange={handleinput} required>
-            <option selected disabled value="">{t('Gender')}</option>
-            <option value='m'>{t('male')}</option>
-            <option value='f' >{t('female')}</option>
-          </select>
-          <div className="invalid-feedback">
-            {t('error11')}
-          </div>
-        </div> */}
-
-        <div className="col-12">
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required />
-            <label className="form-check-label" htmlFor="invalidCheck">
-              {t('conditions')}
-            </label>
-            <div className="invalid-feedback">
-              {t('error12')}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="image-with-button">
+                <label htmlFor="image-upload2">
+                  <img src={image2} alt="Image 2" />
+                  <span className="blue-button">{t('Download')}</span>
+                </label>
+                <input
+                  type="file"
+                  id="image-upload2"
+                  name="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(e, setImage2)}
+                  style={{ display: "none" }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-          <br />
-          <br />
-          <br />
+          { loadingFront ?
+            <Fragment>
+              <Loader />
+            </Fragment>
+            :
+            <form className="row g-3 needs-validation  " onSubmit={handleSubmit(submitHandler)} noValidate>
+              <div className="col-md-4">
+                <label htmlFor="validationCustom01" className="form-label">{t("First name")}</label>
+                <input name='name' type="text"   className="form-control" id="validationCustom01" value={values.name} onChange={handleinput} />
+                <p>{errors.name?.message}</p>
 
-          {/*  Loan Simulator  */}
-          {/**/}
-          <LoanSimulator  getCreditData={getCreditData} /> 
-          {/* Submit button */}
-          <div className="row text-center mt-5 ">
-                    <div className="col-12">
-                        <button  type="submit" className="btn btn-outline-primary"  >{t('Send Request')} </button>
-                    </div>
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="validationCustom02" className="form-label">{t("Lastname")}</label>
+                <input name='surname' type="text"   className="form-control" id="validationCustom02" value={values.surname} onChange={handleinput} />
+                <p>{errors.surname?.message}</p>
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="validationCustomUsername" className="form-label">{t("Email")}</label>
+                <div className="input-group has-validation">
+                  <span className="input-group-text" id="inputGroupPrepend">@</span>
+                  <input name='email' type="text"   className="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" value={values.email} onChange={handleinput} />
+
                 </div>
+                <p>{errors.email?.message}</p>
+              </div>
 
-        </form>}
-    </div>
-    </>
+              <div className="col-md-4">
+                <label htmlFor="Mobile Number" className="form-label">{t("Mobile Number")}</label>
+                <input name='phone_number' type="number" className="form-control" id="Mobile Number" value={values.phone_number} onChange={handleinput} />
+                <p>{errors.phone_number?.message}</p>
+              </div>
+
+              <div className="col-md-4">
+                <label htmlFor="name" className="form-label">{t("City")}</label>
+                <input name='city' type="text" className="form-control" id="name" value={values.city} onChange={handleinput} />
+                {/* <p>{errors.city?.message}</p> */}
+              </div>
+
+              <div className="col-md-4">
+                <label htmlFor="Address" className="form-label">{t("Address")}</label>
+                <input name='address' type="text"  className="form-control" id="Address" value={values.address} onChange={handleinput} />
+                <p>{errors.address?.message}</p></div>
+
+
+              <div className="col-md-4">
+                <label htmlFor="NID" className="form-label">{t("NID")}</label>
+                <input name='cin_number' type="text"  className="form-control" id="NID" value={values.cin_number} onChange={handleinput} />
+                <p>{errors.cin_number?.message}</p></div>
+
+              <div className="col-md-4">
+                <label htmlFor="birth_date" className="form-label">{t('date')}</label>
+                <input name='birth_date' type="text" className="form-control" id="birth_date" value={values.birth_date} onChange={handleinput} />
+                <p>{errors.birth_date?.message}</p></div>
+
+              <div className="col-md-4">
+                <label htmlFor="validationCustom05" className="form-label">{t("Zip")}</label>
+                <input name='zipCode' type="text"  className="form-control" id="validationCustom05" value={values.zipCode} onChange={handleinput} />
+                <p>{errors.zipCode?.message}</p>
+              </div>
+
+              <div className="col-md-4">
+                <label htmlFor="validationCustom111" className="form-label"> {t('JOB')}</label>
+                <input name='job' type="text"   className="form-control" id="validationCustom111" value={values.job} onChange={handleinput} />
+                <p>{errors.job?.message}</p>
+              </div>
+
+
+              <div className="col-md-4">
+                <label htmlFor="validationCustom112" className="form-label"> {t('mother name')}</label>
+                <input name='motherName' type="text"  className="form-control" id="validationCustom112" value={values.motherName} onChange={handleinput} />
+                <p>{errors.motherName?.message}</p>
+              </div>
+
+
+              <div className="col-md-4">
+                <label htmlFor="validationCustom113" className="form-label">{t('NIDdate')}</label>
+                <input name='NID_creation_date' type="text" className="form-control" id="validationCustom113" value={values.NID_creation_date} onChange={handleinput} />
+                <p>{errors.NID_creation_date?.message}</p>
+              </div>
+
+
+              <div className="col-12">
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required />
+                  <label className="form-check-label" htmlFor="invalidCheck">
+                    {t('conditions')}
+                  </label>
+                  <div className="invalid-feedback">
+                    {t('error12')}
+                  </div>
+                </div>
+              </div>
+              <br />
+              <br />
+              <br />
+
+              {/*  Loan Simulator  */}
+              {/**/}
+              <LoanSimulator getCreditData={getCreditData} />
+              {/* Submit button */}
+              <div className="row text-center mt-5 ">
+                <div className="col-12">
+                  <button type="submit" className="btn btn-outline-primary"  >{t('Send Request')} </button>
+                </div>
+              </div>
+
+            </form>}
+
+        </div>
+      </div>
+    </Fragment>
   )
 }
 

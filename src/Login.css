@@ -1,0 +1,17 @@
+.input-field {
+    border: 1px solid #ccc; /* Default border color */
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  /* Highlight input with red border on error */
+  .input-field.error {
+    border-color: red;
+  }
+  
