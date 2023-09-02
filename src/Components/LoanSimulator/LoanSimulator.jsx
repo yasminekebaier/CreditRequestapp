@@ -28,8 +28,8 @@ const LoanSimulator = (props) => {
     const LoanCalculator = () => {
         if (month!== 0){
             const nb_years= Math.ceil(month/12)  
-            console.log("number of years ",nb_years );
-            console.log("the interest is ", interest);
+            // console.log("number of years ",nb_years );
+            // console.log("the interest is ", interest);
             const total_Payement= amount+ amount*(nb_years*interest/100)
             const month_Payement= (amount+ amount*(nb_years*interest/100))/month
             setTotalPayement(roundToDecimalPlaces(total_Payement,1))
@@ -38,11 +38,8 @@ const LoanSimulator = (props) => {
         }
 
     }
-       
-    
 
     useEffect(()=>{
-    
         LoanCalculator()
 
     props.getCreditData(amount,month)

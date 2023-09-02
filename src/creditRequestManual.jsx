@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
-// import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import LanguageContext from './Components/Store/languageProvider';
 import Navbarr from './Components/Navbar/Navbarr';
 import Login from './Login'
@@ -30,6 +29,9 @@ const CreditRequestManual = () => {
   const [t] = useTranslation("global")
   const [status, setStatus] = useState('Pending')
   const [values, setvalue] = useState({ name: '', surname: '', email: '', phone_number: '', city: '', address: '', cin_number: '', birth_date: '', zipCode: '', job: '', motherName: '', NID_creation_date: '' })
+
+
+//  Handle input function  
   function handleinput(event) {
     setvalue((prevValues) => ({
       ...prevValues,
@@ -39,7 +41,7 @@ const CreditRequestManual = () => {
   }
 
 
-const userSchema= yup.object().shape({
+const requestSchema= yup.object().shape({
   name:yup.string().required(t("error1")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")) ,
   email:yup.string().email(t("error33")).required(t("error3")),
   surname:yup.string().required(t("error2")).matches(/^[aA-zZ]+$/,t("letter")) .min(2,t("min")),
@@ -53,7 +55,7 @@ const userSchema= yup.object().shape({
   motherName:yup.string().required(t("error14")).matches(/^[ aA-zZ ]+$/,t("letter")) .min(2,t("min")).max(10,t("max")),
   NID_creation_date:yup .string() .required(t("error15"))})
   const {register,handleSubmit, formState:{errors}}=useForm({
-    resolver : yupResolver(userSchema),
+    resolver : yupResolver(requestSchema),
   }) ;
   
 useEffect(()=>{
@@ -89,7 +91,7 @@ useEffect(()=>{
     console.log('the data is ',data);
     const result=  await axios.post('http://localhost:4000/creditRequest/new',
       {...data,status,amount,month,owner} );
-      history.push('/request-home');
+      navigate('/request-home');
     console.log("the result is a succes ",result); 
     
   };

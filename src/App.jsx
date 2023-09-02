@@ -11,6 +11,7 @@ import RequestRedirect from './Components/Redirect/RequestRedirect';
 import Ocr from "./Ocr";
 import PrivateRoute from './Components/PrivateRoute';
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [language, setLanguage] = useState("en");
@@ -33,18 +34,12 @@ function App() {
                   <Ocr />
                 </LanguageContext.Provider>
               } />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<Login/>} />
               <Route path="/logout" element={<div>Logout</div>} />
-              <Route path="/agent" element={
-                <PrivateRoute
-                  component={Agent}
-                  isAuthenticated={isAuthenticated}
-                  allowedRoles={['agent']}
-                  userRole={userRole}
-                />
-              } />
+              <Route path="/agent" element={<Agent/>} />
               <Route path="/client/:id" element={<Clientdetails />} />
               <Route path="/request-home" element={<RequestRedirect />} />
+             
             </Routes>
           </div>
         </div>
@@ -54,3 +49,10 @@ function App() {
 }
 
 export default App;
+
+{/* <PrivateRoute
+component={Agent}
+isAuthenticated={isAuthenticated}
+allowedRoles={['agent']}
+userRole={userRole}
+/> */}
