@@ -41,6 +41,17 @@ exports.getRequestById = async (req,res,next) => {
 //update request by id => /creditRequest/update/:id 
 //update request by id => /creditRequest/update/:id 
 
+// Find request by userName 
+exports.getRequestByUserName = async (req,res,next) => {
+  const creditRequest = await CreditRequest.find({owner: req.query.owner}).exec()
+  if (!creditRequest) {
+      return next(new ErrorHandler('creditRequest not Found', 404));
+  }
+  res.status(200).json({
+      success:true, 
+       creditRequest:creditRequest
+  })
+}
 
 const sendStatusEmail = async (email, status ,comment) => {
     try {

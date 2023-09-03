@@ -26,7 +26,7 @@ const mongoose =require('mongoose');
      }, 
      zipCode:{
         type: Number, 
-        required: true , 
+        // required: true , 
      },
      phone_number: {
         type: Number ,
@@ -37,21 +37,49 @@ const mongoose =require('mongoose');
         required:true, 
     },
     birth_date: {
-        type :Date ,
+        type :String ,
         required :true , 
     } , 
+    job: {
+        type: String,
+        required:true,
+        Default:"Deny"
+    },
+    motherName: {
+        type: String,
+        required:true,
+        Default:"Deny"
+    },
+    NID_creation_date:{
+        type:String,
+        required:true ,
+    },
+
+
     status: {
         type: String,
         required:true,
         Default:"Deny"
+    }, 
+    amount: {
+        type: Number,
+        required:true,
+        Default:"Deny"
+    }, 
+    month: {
+        type: String,
+        required:true,
+        Default:0
+    },
+    owner:{
+        type:String, 
+        required: true, 
+
     }
+
+
 
  }) 
  module.exports= mongoose.model('CreditRequest',creditRequestSchema )
 
 
- // // validate: {
-        // //     validator: function(cin_number){
-        // //         return cin_number.length==8
-        // //     },
-        // },
