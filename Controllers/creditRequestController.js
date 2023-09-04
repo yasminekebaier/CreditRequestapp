@@ -53,25 +53,41 @@ exports.getRequestByUserName = async (req,res,next) => {
   })
 }
 
-const sendStatusEmail = async (email, status ,comment) => {
-    try {
-        const transporter = mailTransport();
-        console.log('Sending email to:', email);
-      const mailOptions = {
-        from: 'kebaieryasmine0@gmail.com',
-        to: email,
-        subject: 'Credit Request Status',
-        html: `<h3>Hello,</h3><p>Your credit request status is: ${status}</p><p>Cause: ${comment}</p>`,
-      };
-      console.log('Mail options:', mailOptions);
-      const info = await transporter.sendMail(mailOptions);
-      mailTransport().sendMail(mailOptions,info);
-      console.log('Email sent:', info.response);
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
+const sendStatusEmail = async (email, status, comment) => {
+  try {
+    console.log('Comment received in sendStatusEmail:', comment);
+    // Le reste de votre code pour envoyer l'e-mail
+  } catch (error) {
+    console.error('Error sending email:', error);
   }
-exports.updateRequestById = async (req, res, next) => {
+
+  try {
+    const transporter = mailTransport();
+    console.log('Sending email to:', email);
+
+    let htmlMessage = `<h3>Hello,</h3><p>Your credit request status is: ${status}</p>`;
+    
+    if (status === 'Refused') {
+      htmlMessage += `<p>Cause: ${comment}</p>`;
+    }
+
+    const mailOptions = {
+      from: 'kebaieryasmine0@gmail.com',
+      to: email,
+      subject: 'Credit Request Status',
+      html: htmlMessage,
+    };
+
+    console.log('Mail options:', mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    mailTransport().sendMail(mailOptions, info);
+    console.log('Email sent:', info.response);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+}
+  
+  exports.updateRequestById = async (req, res, next) => {
     try {
       const { id } = req.params;
       const { status, email, comment } = req.body; // Assuming you send the new status and client email in the request body
