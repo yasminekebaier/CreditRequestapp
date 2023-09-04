@@ -2,8 +2,8 @@ import React from  'react';
 import axios from "axios";
 import { useState,useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
-import Navbarr from './Components/Navbar/Navbarr';
-import LanguageContext from './Components/Store/languageProvider';
+import Navbarr from '../Components/Navbar/Navbarr';
+import LanguageContext from '../Components/Store/languageProvider';
 
 
 function Agent (){

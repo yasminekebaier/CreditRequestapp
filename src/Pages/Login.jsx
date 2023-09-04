@@ -5,12 +5,12 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
-import Navbarr from "./Components/Navbar/Navbarr";
-import LanguageContext from "./Components/Store/languageProvider";
+import Navbarr from "../Components/Navbar/Navbarr";
+import LanguageContext from "../Components/Store/languageProvider";
 import { Formik, ErrorMessage, Form, Field } from "formik";
 
 import "./Login.css"
-import LoginSchema from "./validation/LoginSchema";
+import LoginSchema from "../validation/LoginSchema";
 
 
 const Login = () => {

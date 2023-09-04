@@ -8,7 +8,7 @@ import { Navigate } from 'react-router-dom';
 
 
 const Navbarr = () => {
-
+  const logoUrl = `${window.location.origin}/images/logo.png`;
   // const history = useHistory();
   const {language, setLanguage} = useContext(LanguageContext);
   const [t, i18n] = useTranslation("global")
@@ -47,7 +47,7 @@ const Navbarr = () => {
       <nav className="navbar">
       <div className="container"> 
           <div className="logo-container">
-          <Link to='/'>  <img className="logo" src="./images/logo.png" alt="Logo de l'application" /></Link>
+          <Link to='/'>  <img className='logo' src={logoUrl} alt="Logo"   /></Link>
           <h1 className="nav-title1">creditWise</h1>
         </div>
 

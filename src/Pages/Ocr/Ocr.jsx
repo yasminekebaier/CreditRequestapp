@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 // import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import { Link, useNavigate } from "react-router-dom";
-import './ocr.css'
-import './range.css'
+/* import './ocr.css' */
+import '../range.css'
 import { useEffect, useState, useContext } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 // import AnimatedProgressProvider from "./AnimatedProgressProvider";
@@ -14,15 +14,15 @@ import { transliterate as tr, slugify } from 'transliteration';
 import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import Languagecontext from "./Components/Store/languageProvider";
-import Loader from "./Components/Loader/Loader"
-import LoanSimulator from "./Components/LoanSimulator/LoanSimulator";
+import Languagecontext from "../../Components/Store/languageProvider";
+import Loader from "../../Components/Loader/Loader"
+import LoanSimulator from "../../Components/LoanSimulator/LoanSimulator";
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
-import LanguageContext from "./Components/Store/languageProvider";
-import Navbarr from "./Components/Navbar/Navbarr";
-import ImageUpload from "./ImageUpload";
+import LanguageContext from "../../Components/Store/languageProvider";
+import Navbarr from "../../Components/Navbar/Navbarr";
+import ImageUpload from "../../ImageUpload";
 
 
 

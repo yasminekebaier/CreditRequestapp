@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from "./Login";
+import Login from "./Pages/Login";
 import Navbarr from "./Components/Navbar/Navbarr";
 import Home from "./Components/LandingPage/Home";
-import Agent from "./Agent";
-import Clientdetails from "./Components/Clientdetails";
+import Agent from "./Pages/Agent";
+import Clientdetails from "./Pages/Clientdetails";
 import LanguageContext from './Components/Store/languageProvider';
-import CreditRequestManual from "./creditRequestManual";
+import CreditRequestManual from "./Pages/creditRequestManual";
 import RequestRedirect from './Components/Redirect/RequestRedirect';
-import Ocr from "./Ocr";
-import PrivateRoute from './Components/PrivateRoute';
+import Ocr from "./Pages/Ocr/Ocr";
+
 
 
 function App() {
@@ -49,10 +49,3 @@ function App() {
 }
 
 export default App;
-
-{/* <PrivateRoute
-component={Agent}
-isAuthenticated={isAuthenticated}
-allowedRoles={['agent']}
-userRole={userRole}
-/> */}

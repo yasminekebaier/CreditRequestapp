@@ -6,7 +6,7 @@ import { transliterate as tr, slugify } from 'transliteration';
 import axios from 'axios'; 
 import translate from "translate";
 
-import "./ocr.css"
+import "./Pages/Ocr/ocr.css"
 const ImageUpload = (props) => {
 
     const [t] = useTranslation("global")

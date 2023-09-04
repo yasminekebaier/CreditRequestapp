@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Navbarr from "./Navbar/Navbarr";
-import LanguageContext from "./Store/languageProvider";
+import Navbarr from "../Components/Navbar/Navbarr";
+import LanguageContext from "../Components/Store/languageProvider";
 
 const Clientdetails = () => {
   const [language, setLanguage] = useState("en");
@@ -66,9 +66,14 @@ const Clientdetails = () => {
           <div className="col-md-9">
         <h1 className="card-title mb-2" ><span style={{ fontWeight: 'bold', color: 'purple' }}>Name:</span> {client.name}</h1>
         <h2 className="card-subtitle mb-2 "><span style={{ fontWeight: 'bold', color: 'purple' }}>SurName:</span> {client.surname}</h2>
+        <h2 className="card-subtitle mb-2 "><span style={{ fontWeight: 'bold', color: 'purple' }}>email:</span> {client.email}</h2>
         <h2 className="card-subtitle mb-2 "><span style={{ fontWeight: 'bold', color: 'purple' }}>phone_number:</span> {client.phone_number}</h2>
         <h2 className="card-text mb-2 "><span style={{ fontWeight: 'bold', color: 'purple' }}>cin_number:</span>  {client.cin_number}</h2>
         <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>City:</span>  {client.city}</h2>
+        <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>addres:</span>  {client.addres}</h2>
+        <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>birth_date:</span>  {client.birth_date}</h2>
+        <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>job:</span>  {client.job}</h2>
+        <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>zipCode: </span>  {client.zipCode}</h2>
         <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>Status:</span>  {client.status}</h2>
         <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}> Amount:</span> {client.amount}</h2>
         <h2 className="card-text mb-2"><span style={{ fontWeight: 'bold', color: 'purple' }}>Month:</span>  {client.month}</h2>

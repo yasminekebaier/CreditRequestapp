@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
 import './range.css'
-import LoanSimulator from './Components/LoanSimulator/LoanSimulator';
+import LoanSimulator from '../Components/LoanSimulator/LoanSimulator';
 import { Link } from "react-router-dom";
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
-import LanguageContext from './Components/Store/languageProvider';
-import Navbarr from './Components/Navbar/Navbarr';
+import LanguageContext from '../Components/Store/languageProvider';
+import Navbarr from '../Components/Navbar/Navbarr';
 import Login from './Login'
 
 const CreditRequestManual = () => {

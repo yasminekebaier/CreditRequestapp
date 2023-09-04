@@ -34,6 +34,7 @@ const RequestRedirect = () => {
     
         axios.get('http://localhost:4000/creditRequest/home',{ params: { owner: owner} })
             .then(response => {
+                console.log("Response from API:", response.data);
                 setRequestData(response.data.creditRequest);
                 if (response.data.creditRequest.length==0){
                     setText(noRequestText); 
