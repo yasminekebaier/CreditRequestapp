@@ -76,7 +76,7 @@ const Clientdetails = () => {
     <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
         <Navbarr />
       </LanguageContext.Provider>
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' , marginTop:'20px'}}>
     <div className="card p-4" style={{ backgroundColor: ' #0c0f38', color: 'white', width: '90%', minHeight: '60vh', display: 'flex', alignItems: 'center' }}>
       <div className="row align-items-center">
         <div className="col-md-3">
