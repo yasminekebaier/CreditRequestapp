@@ -10,19 +10,20 @@ const Footer = () => {
           <>
     <footer className="footer">
       <div className="footer-section">
-        <h3> {t('h')}</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+       {/*  <h3> {t('h')}</h3> */}
+       <h3>CreditWise application </h3>
+        <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h4>
       </div>
       <div className="footer-section">
         <h3>{t('i')}</h3>
-        <p>{t('Email')}: CreditWise@example.com</p>
+        <a href="#">{t('Email')}: CreditWise@example.com</a>
       </div>
       <div className="footer-section">
         <h3>{t('j')}</h3>
         <div className="social-icons">
-          <a href="#"><FaFacebook /></a>
-          <a href="#"><FaInstagram /></a>
-          <a href="#"><FaLinkedin /></a> 
+          <a href="#"><FaFacebook />Proxym-group</a>
+          <a href="#"><FaInstagram />Proxym-group</a>
+          <a href="#"><FaLinkedin />Proxym-group</a> 
         </div>
 
       </div>

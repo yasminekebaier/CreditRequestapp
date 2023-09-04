@@ -3,31 +3,49 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Navbarr from "../Components/Navbar/Navbarr";
 import LanguageContext from "../Components/Store/languageProvider";
+import { useNavigate } from 'react-router-dom';
 
 const Clientdetails = () => {
   const [language, setLanguage] = useState("en");
   const [submitResult, setSubmitResult] = useState(null);
   const [comment, setComment] = useState('');
+  const [message, setMessage] = useState('');
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const { id } = useParams();
   const [client, setClient] = useState(null);
+  const navigate = useNavigate();
  
   useEffect(() => {
-    console.log("ID from useParams:", id);
-    axios.get(`http://localhost:4000/creditRequest/show/${id}`)
-      .then((res) => {
-        console.log("Response from API:", res.data); 
-        setClient(res.data.creditRequest);
-      })
-      .catch((error) => {
-        console.error("Error fetching client details:", error);
-      });
-  }, [id, submitResult]);
+    // Vérifiez si l'utilisateur est connecté
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const role = localStorage.getItem('role');
+
+    if (isLoggedIn === "false" || !role) {
+      // Redirigez l'utilisateur vers la page d'accueil s'il n'est pas connecté ou n'a pas de rôle
+      navigate('/', { replace: true });
+    } else {
+      // Utilisateur connecté, continuez avec le chargement des données du client
+      axios.get(`http://localhost:4000/creditRequest/show/${id}`)
+        .then((res) => {
+          console.log("Response from API:", res.data); 
+          setClient(res.data.creditRequest);
+        })
+        .catch((error) => {
+          console.error("Error fetching client details:", error);
+        });
+    }
+  }, [id, submitResult, navigate]);
+
 
   const handleAccept = () => {
     axios.put(`http://localhost:4000/creditRequest/update/${id}`, { status: "Accepted",email: client.email ,comment: comment })
     .then((res) => {
       // Mettre à jour l'état du client avec le nouveau statut
       setClient((prevClient) => ({ ...prevClient, status: "Accepted" }));
+      // Mettre à jour le message
+      setMessage('Email sent to the client.');
+      // Indiquer que le bouton a été cliqué
+      setIsButtonClicked(true);
     })
     .catch((error) => {
       console.error("Error accepting client:", error);
@@ -40,6 +58,9 @@ const Clientdetails = () => {
       .then((res) => {
         // Mettre à jour l'état du client avec le nouveau statut
         setClient((prevClient) => ({ ...prevClient, status: "Refused" }));
+        setMessage('Email sent to the client.');
+        // Indiquer que le bouton a été cliqué
+        setIsButtonClicked(true);
       })
       .catch((error) => {
         console.error("Error refusing client:", error);
@@ -96,6 +117,11 @@ const Clientdetails = () => {
             Refuse
           </button>
         </div>
+        <div className="text-center" style={{ marginTop: '20px' }}>
+        {isButtonClicked && (
+        <div className="message">{message}</div>
+      )}
+      </div>
       </div>
       </div> 
       </>

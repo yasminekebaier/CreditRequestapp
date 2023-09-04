@@ -86,8 +86,7 @@ function Ocr() {
   }
 
 
-  // const handelfile = (e) => {
-  //   selectFile(URL.createObjectURL(e.target.files[0]))
+
 
   // }
   // const updateImage1 = (croppedImage) => {

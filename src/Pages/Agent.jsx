@@ -4,12 +4,16 @@ import { useState,useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
 import Navbarr from '../Components/Navbar/Navbarr';
 import LanguageContext from '../Components/Store/languageProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 function Agent (){
   const [language, setLanguage] = useState("en");  
   const [clients, setClients] = useState([]);
   const { id } = useParams(); 
+  const isLoggedIn= localStorage.getItem("isLoggedIn");
+  const role =localStorage.getItem('role')
+  const navigate =useNavigate(); 
  
     
    function fetchClients () {
@@ -31,8 +35,18 @@ function Agent (){
       useEffect(() => {
         fetchClients();
       }, []);
+      useEffect(()=>{
+        if (isLoggedIn=="false"|| !role)
+        navigate('/', { replace: true });
+      
+      })
+    /*   useEffect(() => {
+        if (isLoggedIn == "false" || !role || role == "agent")
+          navigate('/Login', { replace: true });
     
     
+      }, [role, isLoggedIn])
+     */
     return(
       <>
       <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
