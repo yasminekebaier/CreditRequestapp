@@ -1,24 +1,30 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment,useContext } from "react";
 
 
 import Navbarr from "../Navbar/Navbarr";
 import LanguageContext from "../Store/languageProvider";
 import {Navigate,useNavigate} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import translate from "translate";
+import Languagecontext from "../Store/languageProvider";
 import axios from "axios";
 
 const RequestRedirect = () => {
     const [requestData, setRequestData] = useState(null);
-    const [language, setLanguage] = useState("en");
+    const { language, setLanguage } = useContext(Languagecontext);
+
+    const [t]=useTranslation("global")
     const info_text = "Your Request is in a pending status.Our bancking agent will review the data provided.You will recieve a response whithin maximum two days.Check out your maibox. "
-    const noRequestText = "You have not created any request yet.Create a credit request by hitting the button request!"
+    const noRequestText =" You have not created any request yet.Create a credit request by hitting the button request!"
     const [text, setText] = useState(info_text);
  
     const [isHidden, setIsHidden] = useState(true);
     const owner = localStorage.getItem("userName");
     const isLoggedIn= localStorage.getItem("isLoggedIn");
+ 
     const navigate =useNavigate()
 
-    console.log("the isLogged in item ",isLoggedIn); 
+
 
 
 
@@ -53,9 +59,21 @@ const RequestRedirect = () => {
             });
     }, []);
 
-// formik implementation  
 
+//  Handle Dynamic Language change  
+const changeInfoLanguage= async()=>{
+    const translatedText= await translate(text, { from: 'en', to: 'ar' })
+    setText(translatedText)
+}
 
+useEffect(()=>{
+    if (language =="ar"){
+   changeInfoLanguage()
+    }
+ 
+ 
+
+},[language] )
 
 
     return (
@@ -76,7 +94,7 @@ const RequestRedirect = () => {
                             <div className="row ">
                                 <div className="col d-flex align-items-center">
                                     <i className="bi bi-info-circle text-white fs-2 me-2"></i>
-                                    <h3 id="h3elelement" className="mb-0 text-white mt-1">Credit request info </h3>
+                                    <h3 id="h3elelement" className="mb-0 text-white mt-1">{t('Credit request info')}</h3>
                                 </div>
                                 <hr className="my-1 text-white" />
                                 <p className="text-white mx-3 mt-2">{text} </p>
@@ -90,15 +108,15 @@ const RequestRedirect = () => {
             {/* Button Request */}
             <div className="">
             </div>
-            <button type="button" className="btn btn-primary float-end my-3" hidden={!isHidden} style={{ "backgroundColor": "#9c30a4" }} onClick={handleRequest}>Request </button>
+            <button type="button" className="btn btn-primary float-end my-3" hidden={!isHidden} style={{ "backgroundColor": "#9c30a4" }} onClick={handleRequest}>{t('Request ')}</button>
 
             {/* Content  of requests  */}
             <table className="table align-middle mb-0 bg-white mt-3">
                 <thead className="bg-light">
                     <tr>
-                        <th>Request ID  </th>
-                        <th>Request owner</th>
-                        <th>Status</th>
+                        <th>{t('Request ID')}</th>
+                        <th>{t('Request owner')}</th>
+                        <th>{t('Status')}</th>
 
                     </tr>
                 </thead>
@@ -127,7 +145,7 @@ const RequestRedirect = () => {
                             <td>
                                 {request.status === 'Accepted' ? (
                                     <span className="badge badge-success rounded-pill d-inline">{request.status}</span>
-                                ) : request.status === 'Deny' ? (
+                                ) : request.status === 'Refused' ? (
                                     <span className="badge badge-danger rounded-pill d-inline">{request.status}</span>
                                 ) : (
                                     <span className="badge badge-primary rounded-pill d-inline">{request.status}</span>

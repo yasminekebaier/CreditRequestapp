@@ -49,7 +49,9 @@
     "Loan Amount":"Loan Amount",
     "TND":"TND",
     "Download":"Download",
-    "1":"Loan simulator",
+    "1":"1",
+    "240":"240",
+    "10":"Loan simulator",
     "2":"Savings simulator",
     "3":"The goal is to provide users with a seamless and comprehensive digital banking experience that meets their financial needs and preferences.",
     "4":"Why you should choose",
@@ -74,6 +76,7 @@
     "dd1":"NID creation date must be of type date",
     "Interest":"Interest rate per year",
     "Monthly Payement":"Monthly Payement",
-    "Total Payement":"Total Payement"
+    "Total Payement":"Total Payement",
+    "footer_info":"This website is a prototype of a Loan Request web application  provided by Proxym  Group ."
     
     }

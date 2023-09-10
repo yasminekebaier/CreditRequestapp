@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,Fragment } from "react"
 import About from "../About"
 import Footer from "../Footer"
 import Header from "../Header"
@@ -6,13 +6,14 @@ import Navbarr from "../Navbar/Navbarr"
 import LanguageContext from "../Store/languageProvider"
 import './Landing.css'
 import { useTranslation } from 'react-i18next';
+
  
 
 function Home() {
    const [language, setLanguage] = useState("en");
    const [t]=useTranslation("global")
   return (
-    <>
+    <Fragment>
  <LanguageContext.Provider value={{language:language,setLanguage:setLanguage}}>
         <Navbarr />
       </LanguageContext.Provider>
@@ -21,8 +22,8 @@ function Home() {
          <div className="container">
             <div className="row d_flex">
                <div className="col-md-5">
-                  <div className="text-bg">
-                     <h1>{t('1')}<br/> {t('2')}</h1>
+                  <div className="text-bg pt-5">
+                     <h1>{t('10')}<br/> {t('2')}</h1>
                      <span>creditWise</span>
                      <p>{t('3')}</p>
                     
@@ -37,16 +38,10 @@ function Home() {
          </div>
          <About/>
       </section>
-      
-      
-     
-     
-      
-  
-  
+
      
      <Footer/>  
-      </>
+     </Fragment>
   )
 }
 

@@ -14,13 +14,14 @@ import { transliterate as tr, slugify } from 'transliteration';
 import Modal from 'react-modal';
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import Languagecontext from "../../Components/Store/languageProvider";
+import Languagecontext from '../../Components/Store/languageProvider';
+import LanguageContext from '../../Components/Store/languageProvider';
+
 import Loader from "../../Components/Loader/Loader"
 import LoanSimulator from "../../Components/LoanSimulator/LoanSimulator";
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
-import LanguageContext from "../../Components/Store/languageProvider";
 import Navbarr from "../../Components/Navbar/Navbarr";
 import ImageUpload from "../../ImageUpload";
 
@@ -181,7 +182,7 @@ const getLoaderPercentage=(value)=>{
     console.log("the month is ", month);
 
 
-  }, [language, month, amount, role, isLoggedIn])
+  }, [ month, amount, role, isLoggedIn])
 
 
   const { register, handleSubmit, formState: { errors }, reset, getValues } = useForm({
@@ -379,7 +380,7 @@ const getLoaderPercentage=(value)=>{
                   </div>
                 </div>
               </div>
-              <LoanSimulator getCreditData={getCreditData} />
+              <LoanSimulator getCreditData={getCreditData} Language={language} />
               <div className="row text-center mt-5 ">
                 <div className="col-12">
                   <button type="submit" className="btn btn-outline-primary"   > {t('Send Request')} </button>

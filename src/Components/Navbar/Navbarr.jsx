@@ -26,8 +26,6 @@ const Navbarr = () => {
     i18n.changeLanguage(lang);
     if (lang === "ar") { document.body.dir = 'rtl' }
     else { document.body.dir = 'ltr' }
-
-
   };
   const handleLogout = (e) => {
       
@@ -59,14 +57,14 @@ const Navbarr = () => {
             className="form-select-font-size-sm  mix-blend-color-dodge"
             aria-label="Default select example">
             <option value="en" selected > {t("ENGLISH")} </option>
-            <option value="ar"  >  {t("ARABE")} </option>
+            <option value="ar"  >  {t("ARABIC")} </option>
 
           </select>
           {storedUserData!=null   ? (
             <>
          
            <Link className="nav-title"  onClick={handleLogout}><button className="btn  btn text-white fs-6" 
-           style ={{"backgroundColor":"#8955EF" ,  "borderRadius":"10px"}}> {t("logout")}
+           style ={{"backgroundColor":"#8955EF" ,  "borderRadius":"10px"}}> {t("Logout")}
             </button></Link> </>
         ) : (
           // User is logged out, show Login link

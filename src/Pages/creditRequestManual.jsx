@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
@@ -8,12 +8,16 @@ import { Link } from "react-router-dom";
 import * as yup from "yup"
 import {yupResolver} from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form';
+import Languagecontext from '../Components/Store/languageProvider';
 import LanguageContext from '../Components/Store/languageProvider';
+
 import Navbarr from '../Components/Navbar/Navbarr';
 import Login from './Login'
 
 const CreditRequestManual = () => {
-  const [language, setLanguage] = useState("en");
+
+ 
+  const { language, setLanguage } = useContext(Languagecontext);
   const [amount,setAmount]=useState(0);
   const [month,setMonth]=useState(0);
   const isLoggedIn= localStorage.getItem("isLoggedIn");
@@ -57,7 +61,7 @@ const requestSchema= yup.object().shape({
   const {register,handleSubmit, formState:{errors}}=useForm({
     resolver : yupResolver(requestSchema),
   }) ;
-  
+
 useEffect(()=>{
   if (isLoggedIn=="false"|| !role)
   navigate('/', { replace: true });
@@ -207,7 +211,7 @@ useEffect(()=>{
      </div>
    </div>
  </div>
-        <LoanSimulator  getCreditData={getCreditData} /> 
+        <LoanSimulator  getCreditData={getCreditData}  Language={language} /> 
         <div className="row text-center mt-5 ">
                     <div className="col-12">
                         <button type="submit" className="btn btn-outline-primary"   > {t('Send Request')} </button>

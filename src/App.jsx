@@ -8,6 +8,7 @@ import Clientdetails from "./Pages/Clientdetails";
 import LanguageContext from './Components/Store/languageProvider';
 import CreditRequestManual from "./Pages/creditRequestManual";
 import RequestRedirect from './Components/Redirect/RequestRedirect';
+import Languagecontext from './Components/Store/languageProvider';
 import Ocr from "./Pages/Ocr/Ocr";
 
 
@@ -28,7 +29,13 @@ function App() {
           <div className="content">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/manual" element={<CreditRequestManual />} />
+
+              <Route path="/manual" element={
+                  <LanguageContext.Provider value={{ language: language, setLanguage: setLanguage }}>
+              <CreditRequestManual />
+              </LanguageContext.Provider>
+              } />
+              
               <Route path="/ocr" element={
                 <LanguageContext.Provider value={{ language: language, setLanguage: setLanguage }}>
                   <Ocr />
@@ -38,8 +45,12 @@ function App() {
               <Route path="/logout" element={<div>Logout</div>} />
               <Route path="/agent" element={<Agent/>} />
               <Route path="/client/:id" element={<Clientdetails />} />
-              <Route path="/request-home" element={<RequestRedirect />} />
-             
+              <Route path="/request-home" element={
+              <LanguageContext.Provider value={{ language: language, setLanguage: setLanguage }}>
+              <RequestRedirect />
+              </LanguageContext.Provider>
+              } />
+              
             </Routes>
           </div>
         </div>
